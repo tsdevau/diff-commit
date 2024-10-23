@@ -1,0 +1,21 @@
+{
+  "package-name": "@tsdevau/diff-commit",
+  "release-commit-message-pattern": "build(${scope}): 🔖 Release ${component} v${version}",
+  "pull-request-title-pattern": "build(${scope}): 🔖 Release ${component} v${version}",
+  "pull-request-header": ":robot: PR by release-please bot",
+  "changelog-sections": [
+    { "type": "feat", "section": "Features & Performance Improvements" },
+    { "type": "perf", "section": "Features & Performance Improvements" },
+    { "type": "fix", "section": "Bug Fixes" },
+    { "type": "revert", "section": "Work in Progress" },
+    { "type": "wip", "section": "Work in Progress" },
+    { "type": "docs", "section": "Documentation" },
+    { "type": "refactor", "section": "DX Improvements" },
+    { "type": "style", "section": "DX Improvements" },
+    { "type": "styles", "section": "DX Improvements" },
+    { "type": "chore", "section": "DX Maintenance & Configuration" },
+    { "type": "build", "section": "DX Maintenance & Configuration" },
+    { "type": "test", "section": "DX Testing" },
+    { "type": "ci", "section": "DX Continuous Integrations" }
+  ]
+}
