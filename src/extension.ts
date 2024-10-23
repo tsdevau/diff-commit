@@ -2,6 +2,10 @@ import Anthropic from "@anthropic-ai/sdk"
 import { AnthropicError } from "@anthropic-ai/sdk/error"
 import * as vscode from "vscode"
 
+const defaultModel = "claude-3-5-sonnet-20241022"
+const defaultMaxTokens = 1024
+const defaultTemperature = 0.4
+
 export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand("diff-commit.generateCommitMessage", async () => {
     const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath
@@ -69,15 +73,15 @@ export function activate(context: vscode.ExtensionContext) {
             - Never use '!' or 'BREAKING CHANGE' in the commit message.
             - Output will use markdown formatting for lists etc.
             - Output will ONLY contain the commit message.
-            - Do not include any other text, summary or explanation.
+            - Do not include any other text or explanation in the output.
             </instructions>
             `
 
     try {
       const message = await anthropic.messages.create({
-        model: "claude-3-5-sonnet-20241022",
-        max_tokens: config.get<number>("maxTokens") || 1024,
-        temperature: config.get<number>("temperature") || 0.4,
+        model: config.get<string>("model") || defaultModel,
+        max_tokens: config.get<number>("maxTokens") || defaultMaxTokens,
+        temperature: config.get<number>("temperature") || defaultTemperature,
         system:
           "You are a seasoned software developer with an extraordinary gift for writing detailed conventional commit messages.",
         messages: [
@@ -91,6 +95,12 @@ export function activate(context: vscode.ExtensionContext) {
       const commitMessage = message.content[0].type === "text" ? message.content[0].text : undefined
       if (commitMessage) {
         console.log(message.stop_reason, message.usage)
+
+        // Replace bullets occasionally output by the model with hyphens
+        commitMessage.replace("*", "-")
+
+        // TODO: Add some verification for format and content like starts with `type enum`, includes scope, etc.
+
         // Set the commit message in the repository's input box
         repo.inputBox.value = commitMessage
       }
