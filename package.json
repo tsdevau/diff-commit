@@ -1,0 +1,71 @@
+{
+  "name": "diff-commit",
+  "displayName": "Diff Commit",
+  "version": "0.0.1",
+  "description": "Generate detailed conventional commit messages using Anthropic Claude 3.5 Sonnet.",
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "repository": {
+    "url": "https://github.com/tsdevau/diff-commit"
+  },
+  "publisher": "tpsTech",
+  "main": "./out/extension.js",
+  "scripts": {
+    "compile": "tsc -p ./",
+    "lint": "eslint src/**/*.ts",
+    "pretest": "npm run lint",
+    "test": "vitest",
+    "vscode:prepublish": "npm run compile",
+    "watch": "tsc -watch -p ./"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "diff-commit.generateCommitMessage",
+        "title": "DiffCommit :: Generate Commit Message"
+      }
+    ],
+    "configuration": {
+      "title": "Diff Commit",
+      "properties": {
+        "diffCommit.maxTokens": {
+          "type": "number",
+          "default": 1024,
+          "minimum": 1,
+          "maximum": 8192,
+          "description": "Maximum number of tokens to generate in the response. Higher values allow for longer commit messages but use more API tokens."
+        },
+        "diffCommit.temperature": {
+          "type": "number",
+          "default": 0.4,
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Controls randomness in the response. Lower values (like 0.4) produce more focused and consistent commit messages, while higher values introduce more variety."
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.8",
+    "@types/vscode": "^1.94.0",
+    "@typescript-eslint/eslint-plugin": "^8.11.0",
+    "@typescript-eslint/parser": "^8.11.0",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.13.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-tailwindcss": "^3.17.5",
+    "prettier-plugin-packagejson": "^2.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.8",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
+  },
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "icon": "tps-logo.png"
+}
