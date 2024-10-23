@@ -1,0 +1,15 @@
+name: Auto Assign
+on:
+  issues:
+    types: [opened, reopened, unassigned]
+  pull_request_target:
+    types: [opened, reopened, unassigned, ready_for_review, review_requested]
+
+jobs:
+  add-reviews:
+    name: Assign Assignee and Reviewers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: kentaro-m/auto-assign-action@v2.0.0
+        with:
+          configuration-path: .github/auto-assign.yaml
