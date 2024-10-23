@@ -11,20 +11,19 @@ Diff Commit is a VSCode extension that helps you generate conventional commit me
 
 ## Requirements
 
-- VSCode 1.85.0 or higher
+- VSCode 1.9.4 or higher
 - Git installed and configured in your workspace
 - An Anthropic API key for accessing Claude 3.5 AI
 
 ## Usage
 
 1. Stage your changes in Git
-2. Open the Command Palette (Ctrl+Shift+P)
+2. Open the Command Palette (Cmd/Ctrl + Shift + P)
 3. Run the command: "DiffCommit :: Generate Commit Message"
 4. Enter your Anthropic API key when prompted for message generation
-5. Review the generated commit message in the preview window
-6. Choose to either:
-   - "Insert into SCM": Apply the message to the source control input
-   - "Cancel": Discard the generated message
+5. Review the generated commit message in the Source Control message input
+6. Edit the commit message if necessary
+7. Click 'Commit' to commit the changes with the generated message
 
 ## Configuration
 
