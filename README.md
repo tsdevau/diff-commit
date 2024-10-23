@@ -1,13 +1,15 @@
 # Diff Commit
 
-Diff Commit is a VSCode extension that helps you generate conventional commit messages using Claude 3.5 AI.
+Diff Commit is a VSCode extension that helps you generate commit messages following the conventional commits specification using Anthropic's AI models like Claude 3.5 Sonnet. Commit messages are generated using the diff of staged changes and entered directly into the SCM message input.
+
+The generated commit messages are compatible with googleapis/release-please and other tools that use conventional commits.
 
 ## Features
 
-- Generate commit messages based on staged changes using Claude 3.5 Sonnet
-- Preview generated commit messages before applying
+- Generate commit messages based on the diff of staged changes using Anthropic's AI models like Claude 3.5 Sonnet
+- Preview and edit generated commit messages before applying the commit
 - Uses markdown formatting for commit messages
-- Implements conventional commit format with type and scope
+- Implements conventional commit format with type, scope, subject, and body
 
 ## Requirements
 
@@ -29,6 +31,7 @@ Diff Commit is a VSCode extension that helps you generate conventional commit me
 
 The extension provides the following settings:
 
+- `diffCommit.model`: The Anthropic AI model to use for generating commit messages. (Default: "claude-3-5-sonnet-20241022", Options: "claude-3-5-sonnet-latest", "claude-3-opus-latest", "claude-3-sonnet-20240229", "claude-3-haiku-20240307")
 - `diffCommit.maxTokens`: Maximum number of tokens to generate in the response. Higher values allow for longer commit messages but use more API tokens. (Default: 1024, Range: 1-8192)
 - `diffCommit.temperature`: Controls randomness in the response. Lower values (like 0.4) produce more focused and consistent commit messages, while higher values introduce more variety. (Default: 0.4, Range: 0-1)
 
@@ -57,13 +60,6 @@ If you encounter any of these errors, the extension will display a message with 
 pnpm install
 ```
 
-### Running Tests
-
-Run the tests using:
-```bash
-pnpm test
-```
-
 ### Building
 
 Build the extension:
@@ -71,20 +67,22 @@ Build the extension:
 pnpm compile
 ```
 
-Watch for changes during development:
+### Running Tests
+
+Run the tests using:
 ```bash
-pnpm watch
+pnpm test
 ```
 
 ### Local Testing
 
-1. Press F5 in VSCode to start debugging
+1. Press F5 or start the debugger in VSCode to start debugging
 2. This will open a new VSCode window with the extension loaded
 3. Make changes to files and use the source control panel to test the extension
 
 ## Contributing
 
-Contributions to Diff Commit are welcome! Please feel free to submit a Pull Request.
+Feature requests, suggestions and contributions to Diff Commit are welcome! Please feel free to submit an idea or Pull Request.
 
 ## License
 
