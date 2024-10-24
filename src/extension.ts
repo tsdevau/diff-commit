@@ -7,7 +7,7 @@ const defaultMaxTokens = 1024
 const defaultTemperature = 0.4
 
 export function activate(context: vscode.ExtensionContext) {
-  const disposable = vscode.commands.registerCommand("diff-commit.generateCommitMessage", async () => {
+  const disposable = vscode.commands.registerCommand("diffCommit.generateCommitMessage", async () => {
     const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath
     if (!workspaceRoot) {
       vscode.window.showErrorMessage("No workspace folder found")
@@ -37,26 +37,33 @@ export function activate(context: vscode.ExtensionContext) {
       return
     }
 
-    // Try to get existing API key from secure storage only
-    let apiKey = await context.secrets.get("anthropic-api-key")
+    let apiKey: string | undefined
+    try {
+      // Try to get existing API key from secure storage only
+      apiKey = await context.secrets.get("anthropic-api-key")
 
-    // If no key exists, prompt for it
-    if (!apiKey) {
-      apiKey = await vscode.window.showInputBox({
-        prompt: "Enter your Anthropic API Key",
-        password: true,
-        placeHolder: "sk-ant-api...",
-      })
+      // If no key exists, prompt for it
       if (!apiKey) {
-        vscode.window.showErrorMessage("API Key is required")
-        return
+        apiKey = await vscode.window.showInputBox({
+          prompt: "Enter your Anthropic API Key",
+          password: true,
+          placeHolder: "sk-ant-api...",
+        })
+        if (!apiKey) {
+          vscode.window.showErrorMessage("API Key is required")
+          return
+        }
+        if (!apiKey.startsWith("sk-ant-api")) {
+          vscode.window.showErrorMessage("Invalid Anthropic API Key format. Should start with sk-ant-api")
+          return
+        }
+        // Store the new key in SecretStorage only
+        await context.secrets.store("anthropic-api-key", apiKey)
       }
-      if (!apiKey.startsWith("sk-ant-api")) {
-        vscode.window.showErrorMessage("Invalid Anthropic API Key format. Should start with sk-ant-api")
-        return
-      }
-      // Store the new key in SecretStorage only
-      await context.secrets.store("anthropic-api-key", apiKey)
+    } catch (error) {
+      console.error("Secrets storage error:", error)
+      vscode.window.showErrorMessage("Failed to access secure storage:", JSON.stringify(error))
+      return
     }
 
     const anthropic = new Anthropic({
@@ -92,17 +99,26 @@ export function activate(context: vscode.ExtensionContext) {
         ],
       })
 
-      const commitMessage = message.content[0].type === "text" ? message.content[0].text : undefined
+      let commitMessage
+      if (message.content[0].type === "text") {
+        commitMessage = message.content
+          .filter((msg) => msg.type === "text")
+          .map((msg) => msg.text)
+          .join("\n")
+          .replace(/\n{3,}/g, "\n\n")
+          .trim()
+      }
+
       if (commitMessage) {
         console.log(message.stop_reason, message.usage)
 
         // Replace bullets occasionally output by the model with hyphens
-        commitMessage.replace("*", "-")
+        const processedMessage = commitMessage.replace(/\*\s/g, "- ")
 
         // TODO: Add some verification for format and content like starts with `type enum`, includes scope, etc.
 
         // Set the commit message in the repository's input box
-        repo.inputBox.value = commitMessage
+        repo.inputBox.value = processedMessage
       }
     } catch (error) {
       if (error instanceof AnthropicError) {
