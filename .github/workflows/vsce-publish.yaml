@@ -28,6 +28,9 @@ jobs:
       - name: Install vsce
         run: npm install -g @vscode/vsce
 
+      - name: Build Extension
+        run: npm run compile
+
       - name: Publish Extension
         run: vsce publish -p ${VSCE_PAT}
         env:
