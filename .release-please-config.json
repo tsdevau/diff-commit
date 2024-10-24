@@ -3,22 +3,26 @@
   "release-commit-message-pattern": "build(${scope}): 🔖 Release ${component} v${version}",
   "pull-request-title-pattern": "build(${scope}): 🔖 Release ${component} v${version}",
   "pull-request-header": ":robot: PR by release-please bot",
-  "types": [
-    { "type": "feat", "section": "Features, Additions & Updates", "hidden": false, "releaseType": "minor" },
-    { "type": "perf", "section": "Features, Additions & Updates", "hidden": false, "releaseType": "patch" },
-    { "type": "refactor", "section": "Features, Additions & Updates", "hidden": false, "releaseType": "patch" },
-    { "type": "fix", "section": "Bug Fixes", "hidden": false, "releaseType": "patch" },
-    { "type": "docs", "section": "Documentation", "hidden": false, "releaseType": "patch" },
-    { "type": "style", "section": "UX Improvements", "hidden": false, "releaseType": "patch" },
-    { "type": "styles", "section": "UX Improvements", "hidden": false, "releaseType": "patch" },
-    { "type": "revert", "section": "Work in Progress", "hidden": false, "releaseType": "patch" },
-    { "type": "wip", "section": "Work in Progress", "hidden": false, "releaseType": null },
-    { "type": "chore", "section": "DX Maintenance & Configuration", "hidden": false, "releaseType": null },
-    { "type": "build", "section": "DX Maintenance & Configuration", "hidden": false, "releaseType": null },
-    { "type": "test", "section": "DX Testing", "hidden": false, "releaseType": null },
-    { "type": "ci", "section": "DX Continuous Integrations", "hidden": false, "releaseType": null }
-  ],
-  "prerelease": false,
-  "bump-minor-pre-major": true,
-  "bump-patch-for-minor-pre-major": true
+  "initial-version": "0.0.1",
+  "bootstrap-sha": "HEAD",
+  "last-release-sha": "HEAD",
+  "versioning": {
+    "commit-types": [
+      { "type": "feat", "section": "Features, Additions & Updates", "hidden": false, "releaseType": "minor" },
+      { "type": "perf", "section": "Features, Additions & Updates", "hidden": false, "releaseType": "patch" },
+      { "type": "refactor", "section": "Features, Additions & Updates", "hidden": false, "releaseType": "patch" },
+      { "type": "fix", "section": "Bug Fixes", "hidden": false, "releaseType": "patch" },
+      { "type": "docs", "section": "Documentation", "hidden": false, "releaseType": "patch" },
+      { "type": "style", "section": "UX Improvements", "hidden": false, "releaseType": "patch" },
+      { "type": "styles", "section": "UX Improvements", "hidden": false, "releaseType": "patch" },
+      { "type": "revert", "section": "Work in Progress", "hidden": false, "releaseType": "patch" },
+      { "type": "wip", "section": "Work in Progress", "hidden": false, "releaseType": null },
+      { "type": "chore", "section": "DX Maintenance & Configuration", "hidden": false, "releaseType": null },
+      { "type": "build", "section": "DX Maintenance & Configuration", "hidden": false, "releaseType": null },
+      { "type": "test", "section": "DX Testing", "hidden": false, "releaseType": null },
+      { "type": "ci", "section": "DX Continuous Integrations", "hidden": false, "releaseType": null }
+    ],
+    "bump-minor-pre-major": true,
+    "bump-patch-for-minor-pre-major": true
+  }
 }
