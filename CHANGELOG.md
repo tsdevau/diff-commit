@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.4...diff-commit-v0.0.5) (2024-10-24)
+
+
+### Bug Fixes
+
+* **build:** fix main entry point path in package.json to reflect simplified directory structure ([133c8e0](https://github.com/tsdevau/diff-commit/commit/133c8e07c8961e5783b6ea54405b70a3b2699705))
+
 ## [0.0.4](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.3...diff-commit-v0.0.4) (2024-10-24)
 
 
