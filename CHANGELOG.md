@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.2...diff-commit-v0.0.3) (2024-10-24)
+
+
+### DX Continuous Integrations
+
+* **workflows:** add VSCode marketplace publish workflow and update release config ([19f6c24](https://github.com/tsdevau/diff-commit/commit/19f6c2418801500b9e4cc694b7a3dc4a4499b175))
+
 ## [0.0.2](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.1...diff-commit-v0.0.2) (2024-10-24)
 
 
