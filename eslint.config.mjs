@@ -15,7 +15,7 @@ export default [
     ],
   },
   {
-    files: ["**/*.mjs", "vitest.config.mjs"],
+    files: ["**/*.mjs"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
