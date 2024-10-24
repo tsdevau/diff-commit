@@ -4,8 +4,6 @@
   "pull-request-title-pattern": "build(${scope}): 🔖 Release ${component} v${version}",
   "pull-request-header": ":robot: PR by release-please bot",
   "initial-version": "0.0.1",
-  "bootstrap-sha": "HEAD",
-  "last-release-sha": "HEAD",
   "versioning": {
     "commit-types": [
       { "type": "feat", "section": "Features, Additions & Updates", "hidden": false, "releaseType": "minor" },
