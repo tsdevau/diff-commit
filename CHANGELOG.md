@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.6](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.5...diff-commit-v0.0.6) (2024-10-24)
+
+
+### Features, Additions & Updates
+
+* **build:** add esbuild compilation script with problem matcher ([3805e8b](https://github.com/tsdevau/diff-commit/commit/3805e8b4754a14b059ab4e8894d9de854611d2c8))
+* **build:** migrate from tsc to esbuild for compilation ([f208280](https://github.com/tsdevau/diff-commit/commit/f2082804fc1cbdeae4747bab7f1afcc185445b59))
+
+
+### DX Maintenance & Configuration
+
+* **build:** update .vscodeignore to exclude additional config files ([d798d47](https://github.com/tsdevau/diff-commit/commit/d798d474aae5388b2fd6e93761f2dd376614892f))
+* **config:** update ESLint and TypeScript configuration files ([4c67f35](https://github.com/tsdevau/diff-commit/commit/4c67f354006a96c3e005cb900a060a845547eeed))
+
 ## [0.0.5](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.4...diff-commit-v0.0.5) (2024-10-24)
 
 
