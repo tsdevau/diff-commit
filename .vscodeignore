@@ -1,6 +1,7 @@
 .github
 .gitignore
-.release-please-config.json
+.prettierrc.mjs
+.release-please-manifest.json
 .vscode-test/**
 .vscode/**
 .yarnrc
@@ -9,6 +10,8 @@
 **/*.map
 **/*.ts
 **/tsconfig*.json
+compile.mjs
+release-please-config.json
 src/**
 test
 vsc-extension-quickstart.md
