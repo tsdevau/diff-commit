@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "pull-request-title-pattern": "build(${scope}): 🔖 Release ${component} ${version}",
+      "pull-request-header": ":robot: PR by release-please bot",
+      "include-v-in-tag": true,
+      "initial-version": "0.1.0",
+      "changelog-sections": [
+        { "type": "feat", "section": "Features, Additions & Updates", "hidden": false },
+        { "type": "perf", "section": "Features, Additions & Updates", "hidden": false },
+        { "type": "refactor", "section": "Features, Additions & Updates", "hidden": false },
+        { "type": "fix", "section": "Bug Fixes", "hidden": false },
+        { "type": "docs", "section": "Documentation", "hidden": false },
+        { "type": "style", "section": "UX Improvements", "hidden": false },
+        { "type": "styles", "section": "UX Improvements", "hidden": false },
+        { "type": "revert", "section": "Work in Progress", "hidden": false },
+        { "type": "wip", "section": "Work in Progress", "hidden": false },
+        { "type": "chore", "section": "DX Maintenance & Configuration", "hidden": false },
+        { "type": "build", "section": "DX Maintenance & Configuration", "hidden": false },
+        { "type": "test", "section": "DX Testing", "hidden": false },
+        { "type": "ci", "section": "DX Continuous Integrations", "hidden": false }
+      ],
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true
+    }
+  }
+}
