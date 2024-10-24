@@ -24,7 +24,7 @@
   },
   "license": "MIT",
   "publisher": "tpsTech",
-  "main": "./out/extension.js",
+  "main": "./out/src/extension.js",
   "scripts": {
     "compile": "tsc -p ./",
     "lint": "eslint src/**/*.ts",
