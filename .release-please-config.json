@@ -5,7 +5,6 @@
       "pull-request-title-pattern": "build(${scope}): 🔖 Release ${component} v${version}",
       "pull-request-header": ":robot: PR by release-please bot",
       "initial-version": "0.0.1",
-      "versioning": "default",
       "changelog-sections": [
         { "type": "feat", "section": "Features, Additions & Updates", "hidden": false, "release-type": "minor" },
         { "type": "perf", "section": "Features, Additions & Updates", "hidden": false, "release-type": "patch" },
