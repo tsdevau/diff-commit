@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "packages": {
     ".": {
-      "pull-request-title-pattern": "build(${scope}): 🔖 Release ${component} ${version}",
+      "pull-request-title-pattern": "build${scope}: 🔖 Release ${component} ${version}",
       "pull-request-header": ":robot: PR by release-please bot",
       "include-v-in-tag": true,
       "initial-version": "0.1.0",
