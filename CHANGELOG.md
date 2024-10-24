@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.3...diff-commit-v0.0.4) (2024-10-24)
+
+
+### DX Continuous Integrations
+
+* **workflow:** add build step before publishing vscode extension ([9e97d48](https://github.com/tsdevau/diff-commit/commit/9e97d4856c5c53cb476657334b943615788d3f21))
+
 ## [0.0.3](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.2...diff-commit-v0.0.3) (2024-10-24)
 
 
