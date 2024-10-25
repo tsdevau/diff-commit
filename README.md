@@ -1,8 +1,8 @@
 # Diff Commit
 
-Diff Commit is a VSCode extension that helps you generate commit messages following the conventional commits specification using Anthropic's AI models like Claude 3.5 Sonnet. Commit messages are generated using the diff of staged changes and entered directly into the SCM message input.
+Diff Commit is a VSCode extension that helps you generate commit messages following the conventional commits specification using Anthropic's AI models like Claude 3.5 Sonnet. Commit messages are generated using the diff of staged changes and entered directly into the SCM message input or previewed in a new editor window.
 
-The generated commit messages are compatible with googleapis/release-please and other tools that use conventional commits.
+The generated commit messages are compatible with [googleapis/release-please](https://github.com/googleapis/release-please) and other tools that use conventional commits.
 
 ## Features
 
@@ -15,68 +15,101 @@ The generated commit messages are compatible with googleapis/release-please and 
 
 - VSCode 1.9.4 or higher
 - Git installed and configured in your workspace
-- An Anthropic API key for accessing Claude 3.5 AI
+- An [Anthropic API key](https://console.anthropic.com/settings/keys)
 
-## Usage
+## Installation
 
-1. Stage your changes in Git
-2. Open the Command Palette (Cmd/Ctrl + Shift + P)
-3. Run the command: "DiffCommit :: Generate Commit Message"
-4. Enter your Anthropic API key when prompted for message generation
+Install the extension directly from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=tpsTech.diff-commit) or:
+
+1. Open VSCode
+2. Press <kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>P</kbd>
+3. Type `ext install tpsTech.diff-commit`
+
+## Typical Workflow
+
+1. Stage your changes in Source Control
+2. Open the Command Palette (<kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>)
+3. Run the command: "DiffCommit: Generate Commit Message" (<kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>K</kbd> then <kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>G</kbd>)
+4. Enter your Anthropic API key when prompted (_first time only_)
 5. Review the generated commit message in the Source Control message input
 6. Edit the commit message if necessary
 7. Click 'Commit' to commit the changes with the generated message
 
+## Commands
+
+Access DiffCommit commands from the Command Palette (<kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) or using the keyboard shortcuts:
+
+- `DiffCommit: Generate Commit Message`: Generate a commit message for staged changes and enter it in the Source Control message input
+  - macOS: <kbd>Cmd</kbd> + <kbd>K</kbd> then <kbd>Cmd</kbd> + <kbd>G</kbd>
+  - Windows/Linux: <kbd>Ctrl</kbd> + <kbd>K</kbd> then <kbd>Ctrl</kbd> + <kbd>G</kbd>
+- `DiffCommit: Preview Commit Message`: Generate a commit message for staged changes and preview it in an editor window
+  - macOS: <kbd>Cmd</kbd> + <kbd>K</kbd> then <kbd>Cmd</kbd> + <kbd>P</kbd>
+  - Windows/Linux: <kbd>Ctrl</kbd> + <kbd>K</kbd> then <kbd>Ctrl</kbd> + <kbd>P</kbd>
+- `DiffCommit: Update API Key`: Update the Anthropic API key used for API access
+- `DiffCommit: Delete API Key`: Remove the stored Anthropic API key
+
 ## Configuration
 
-The extension provides the following settings:
+This extension provides the following settings:
 
-- `diffCommit.model`: The Anthropic AI model to use for generating commit messages. (Default: "claude-3-5-sonnet-20241022", Options: "claude-3-5-sonnet-latest", "claude-3-opus-latest", "claude-3-sonnet-20240229", "claude-3-haiku-20240307")
-- `diffCommit.maxTokens`: Maximum number of tokens to generate in the response. Higher values allow for longer commit messages but use more API tokens. (Default: 1024, Range: 1-8192)
-- `diffCommit.temperature`: Controls randomness in the response. Lower values (like 0.4) produce more focused and consistent commit messages, while higher values introduce more variety. (Default: 0.4, Range: 0-1)
+- `diffCommit.allowedTypes`: List of allowed commit types. If provided, this replaces the default options.
+  - Default: [ "feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci" ]
+  - Options: Array<string>
+- `diffCommit.customInstructions`: Add additional custom instructions to the commit generation prompt. Useful for providing context or specific requirements like 'Use Australian English spelling'.
+  - Default: ""
+- `diffCommit.model`: The Anthropic AI model to use for generating commit messages.
+  - Default: "claude-3-5-sonnet-latest"
+  - Options: "claude-3-opus-latest" | "claude-3-sonnet-20240229" | "claude-3-haiku-20240307"
+- `diffCommit.maxTokens`: Maximum number of tokens to generate in the response. Higher values allow for longer commit messages but use more API tokens.
+  - Default: 1024
+  - Range: 1 - 8192
+- `diffCommit.temperature`: Controls randomness in the response. Lower values (like 0.4) produce more focused and consistent commit messages, while higher values introduce more variety.
+  - Default: 0.4
+  - Range: 0 - 1
 
 ## Error Handling
 
-Diff Commit includes comprehensive error handling to provide clear feedback and assist in troubleshooting. Here are some common error scenarios and their meanings:
+Diff Commit includes comprehensive error handling to provide clear feedback and assist in troubleshooting. Here are the common error scenarios you might encounter:
 
-- `GIT_EXTENSION_NOT_FOUND`: The VSCode Git extension is not installed or activated
-- `NO_GIT_REPO`: No Git repository was found in the current workspace
-- `NO_STAGED_CHANGES`: There are no staged changes to generate a commit message for
-- `API_KEY_MISSING`: The Anthropic API key was not provided
-- `API_REQUEST_FAILED`: The request to the Anthropic API failed. Check your internet connection and API key
-- `API_NO_RESPONSE`: No response was received from the Anthropic API
-- `API_REQUEST_SETUP_ERROR`: An error occurred while setting up the API request
-- `UNKNOWN_ERROR`: An unexpected error occurred
+### Git Related
 
-If you encounter any of these errors, the extension will display a message with more details. For persistent issues, please check your setup or contact support.
+- Git extension not found in VSCode
+- No Git repository found in the current workspace
+- No workspace folder found
+- No staged changes detected
 
-## Development
+### API Key Related
 
-### Setup
+- API key is missing or not provided
+- Invalid API key format (should start with sk-ant-api)
+- Failed to access or update secure storage
 
-1. Clone the repository
-2. Install dependencies:
-```bash
-pnpm install
-```
+### Anthropic API Errors
 
-### Building
+- Bad Request (400): Review your prompt and try again
+- Unauthorized (401): Invalid API key, please update and try again
+- Forbidden (403): Permission denied, review your API key
+- Rate Limited (429): Too many requests, try again later
+- Server Error (500): Anthropic API server error
 
-Build the extension:
-```bash
-pnpm compile
-```
+### Other Errors
 
-### Running Tests
+- Failed to write commit message to Source Control
+- Failed to open commit message preview
+- No commit message was generated by the API
 
-Run the tests using:
-```bash
-pnpm test
-```
+If you encounter any of these errors, the extension will display a message with more details. For persistent issues, please check your setup or raise an issue on [GitHub](https://github.com/tsdevau/diff-commit/issues).
+
+## Local Development
+
+1. Clone the [repository](https://github.com/tsdevau/diff-commit)
+2. Install dependencies: `pnpm install`
+3. Build the extension: `pnpm compile`
+4. Run the tests: `pnpm test`
 
 ### Local Testing
 
-1. Press F5 or start the debugger in VSCode to start debugging
+1. Press F5 (<kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> and select `Debug: Start Debugging`) to start the debugger
 2. This will open a new VSCode window with the extension loaded
 3. Make changes to files and use the source control panel to test the extension
 
