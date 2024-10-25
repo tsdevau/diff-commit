@@ -21,8 +21,7 @@
         { "type": "test", "section": "DX Testing", "hidden": false },
         { "type": "ci", "section": "DX Continuous Integrations", "hidden": false }
       ],
-      "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": true
+      "bump-minor-pre-major": true
     }
   }
 }
