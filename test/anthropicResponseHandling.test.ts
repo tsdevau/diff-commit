@@ -143,7 +143,7 @@ describe("Anthropic API Response Handling", () => {
       await generateCommitMessage()
 
       expect(window.showErrorMessage).toHaveBeenCalledWith(
-        "Rate limit exceeded. Please try again later: Rate limit exceeded",
+        "Rate limit exceeded. Please try again later:\n\nRate limit exceeded",
       )
       expect(mockGitRepo.inputBox.value).toBe("")
     })
@@ -166,7 +166,7 @@ describe("Anthropic API Response Handling", () => {
       const generateCommitMessage = getCommand("diffCommit.generateCommitMessage")
       await generateCommitMessage()
 
-      expect(window.showErrorMessage).toHaveBeenCalledWith("Failed to generate commit message: Unknown error")
+      expect(window.showErrorMessage).toHaveBeenCalledWith("Failed to generate commit message:\n\nUnknown error")
       expect(mockGitRepo.inputBox.value).toBe("")
     })
   })

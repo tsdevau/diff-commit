@@ -196,7 +196,7 @@ describe("Git Integration", () => {
       const generateCommitMessage = getCommand("diffCommit.generateCommitMessage")
       await generateCommitMessage()
 
-      expect(window.showErrorMessage).toHaveBeenCalledWith("Failed to write to SCM: Diff error")
+      expect(window.showErrorMessage).toHaveBeenCalledWith("Failed to write to SCM:\n\nDiff error")
       expect(mockAnthropicCreate).not.toHaveBeenCalled()
     })
 
