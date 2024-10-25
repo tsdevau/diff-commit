@@ -1,4 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "include": ["vitest.config.mjs", "eslint.config.mjs", ".prettierrc.mjs", "compile.mjs"]
-}

@@ -21,7 +21,7 @@ export default [
       sourceType: "module",
       parser: tsEslintParser,
       parserOptions: {
-        project: "./tsconfig.eslint.json",
+        project: "./tsconfig.json",
         tsconfigRootDir: ".",
       },
     },
