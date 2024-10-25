@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk"
-import * as vscode from "vscode"
-import { CommitConfig } from "./configManager"
+import { window } from "vscode"
+import type { CommitConfig } from "./configManager"
 
 export class CommitMessageGenerator {
   constructor(private apiKey: string) {}
@@ -25,7 +25,7 @@ export class CommitMessageGenerator {
       - Never use '!' or 'BREAKING CHANGE' in the commit message.
       - Output will use markdown formatting for lists etc.
       - Output will ONLY contain the commit message.
-      - Do not include any other text or explanation in the output.
+      - Do not explain the output.
       </instructions>
       ${config.customInstructions ? `<customInstructions>\n${config.customInstructions}\n</customInstructions>` : ""}
       `.trim()
@@ -45,21 +45,21 @@ export class CommitMessageGenerator {
         ],
       })
 
-      let commitMessage: string | undefined
-      commitMessage = message.content
+      let commitMessage = message.content
         .filter((msg) => msg.type === "text" && "text" in msg)
         .map((msg) => msg.text)
         .join("\n")
-        .replace(/\n{3,}/g, "\n\n")
+        .replace(/\n{3,}/g, "\n\n") // Replace 3 or more newlines with 2 newlines
+        .replace(/(?<![\\\w])\*+[ \t]+/g, "- ") // Replace bullets occasionally output by the model with hyphens
         .trim()
 
       if (!commitMessage) {
-        vscode.window.showWarningMessage("No commit message was generated")
+        window.showWarningMessage("No commit message was generated")
         return undefined
       }
 
       // Replace bullets occasionally output by the model with hyphens
-      return commitMessage.replace(/\*\s/g, "- ")
+      return commitMessage
     } catch (error) {
       this.handleError(error)
       return undefined
@@ -72,31 +72,31 @@ export class CommitMessageGenerator {
   private handleError(error: unknown): void {
     if (error instanceof Anthropic.APIError) {
       const errorMessage = error.message || "Unknown Anthropic API error"
-      console.error(`Anthropic API Error (${error.status}):`, errorMessage)
+      console.error(`Anthropic API Error (${error.status}):\n\n${errorMessage}`)
 
       switch (error.status) {
         case 400:
-          vscode.window.showErrorMessage("Bad request. Review your prompt and try again.")
+          window.showErrorMessage("Bad request. Review your prompt and try again.")
           break
         case 401:
-          vscode.window.showErrorMessage("Invalid API key. Please update your API key and try again.")
+          window.showErrorMessage("Invalid API key. Please update your API key and try again.")
           break
         case 403:
-          vscode.window.showErrorMessage("Permission Denied. Review your prompt or API key and try again.")
+          window.showErrorMessage("Permission Denied. Review your prompt or API key and try again.")
           break
         case 429:
-          vscode.window.showErrorMessage(`Rate limit exceeded. Please try again later: ${errorMessage}`)
+          window.showErrorMessage(`Rate limit exceeded. Please try again later:\n\n${errorMessage}`)
           break
         case 500:
-          vscode.window.showErrorMessage("Anthropic API server error. Please try again later.")
+          window.showErrorMessage("Anthropic API server error. Please try again later.")
           break
         default:
-          vscode.window.showErrorMessage(`Failed to generate commit message: ${errorMessage}`)
+          window.showErrorMessage(`Failed to generate commit message:\n\n${errorMessage}`)
           break
       }
     } else {
       console.error(`Unknown error: ${error instanceof Error ? error.message : String(error)}`)
-      vscode.window.showErrorMessage(
+      window.showErrorMessage(
         `Unknown error generating commit message: ${error instanceof Error ? error.message : String(error)}`,
       )
     }
