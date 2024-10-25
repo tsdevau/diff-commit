@@ -10,8 +10,6 @@
 **/tsconfig*.json
 compile.mjs
 coverage/
-deprecated-tests/
-out/
 package-lock.json
 pnpm-lock.yaml
 release-please-config.json

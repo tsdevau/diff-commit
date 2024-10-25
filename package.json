@@ -31,7 +31,7 @@
     "pretest": "npm run lint",
     "test": "NODE_OPTIONS='--no-deprecation' jest",
     "test:watch": "jest --watch",
-    "vscode:prepublish": "npm run lint && npm run test && npm run compile",
+    "vscode:prepublish": "npm run test && npm run compile",
     "watch": "tsc -watch -p ./"
   },
   "contributes": {
