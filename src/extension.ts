@@ -1,32 +1,32 @@
-import * as vscode from "vscode"
+import { commands, window, workspace, type ExtensionContext, type TextDocument } from "vscode"
 import { APIKeyManager } from "./apiKeyManager"
 import { CommitMessageGenerator } from "./commitMessageGenerator"
 import { ConfigManager } from "./configManager"
 import { GitManager } from "./gitManager"
 
-export function activate(context: vscode.ExtensionContext) {
-  let previewDocument: vscode.TextDocument | undefined
+export function activate(context: ExtensionContext) {
+  let previewDocument: TextDocument | undefined
 
   const apiKeyManager = new APIKeyManager(context)
   const gitManager = new GitManager()
   const configManager = new ConfigManager()
 
   async function generateCommitMessage(): Promise<string | undefined> {
-    const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath
+    const workspaceRoot = workspace.workspaceFolders?.[0]?.uri?.fsPath
     if (!workspaceRoot) {
-      vscode.window.showErrorMessage("No workspace folder found")
+      window.showErrorMessage("No workspace folder found")
       return undefined
     }
 
     const diff = await gitManager.getDiff()
     if (!diff) {
-      vscode.window.showErrorMessage("No changes detected")
+      window.showErrorMessage("No changes detected")
       return undefined
     }
 
     const apiKey = (await apiKeyManager.getAPIKey()) ?? (await apiKeyManager.setAPIKey())
     if (!apiKey) {
-      vscode.window.showErrorMessage("API Key is required")
+      window.showErrorMessage("API Key is required")
       return undefined
     }
 
@@ -36,11 +36,11 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   // Register all commands
-  const cmdUpdateAPIKey = vscode.commands.registerCommand("diffCommit.updateAPIKey", () => apiKeyManager.setAPIKey())
-  const cmdGetAPIKey = vscode.commands.registerCommand("diffCommit.getAPIKey", () => apiKeyManager.getAPIKey())
-  const cmdDeleteAPIKey = vscode.commands.registerCommand("diffCommit.deleteAPIKey", () => apiKeyManager.deleteAPIKey())
+  const cmdUpdateAPIKey = commands.registerCommand("diffCommit.updateAPIKey", () => apiKeyManager.setAPIKey())
+  const cmdGetAPIKey = commands.registerCommand("diffCommit.getAPIKey", () => apiKeyManager.getAPIKey())
+  const cmdDeleteAPIKey = commands.registerCommand("diffCommit.deleteAPIKey", () => apiKeyManager.deleteAPIKey())
 
-  const cmdGenerateCommitMessage = vscode.commands.registerCommand("diffCommit.generateCommitMessage", async () => {
+  const cmdGenerateCommitMessage = commands.registerCommand("diffCommit.generateCommitMessage", async () => {
     try {
       const commitMessage = await generateCommitMessage()
       if (!commitMessage) {
@@ -48,40 +48,38 @@ export function activate(context: vscode.ExtensionContext) {
       }
       gitManager.setCommitMessage(commitMessage)
     } catch (error) {
-      console.error("Error writing commit message to SCM:", error)
-      vscode.window.showErrorMessage(
-        `Failed to write to SCM: ${error instanceof Error ? error.message : String(error)}`,
-      )
+      console.error(`Error writing commit message to SCM:\n\n${error}`)
+      window.showErrorMessage(`Failed to write to SCM:\n\n${error instanceof Error ? error.message : String(error)}`)
     }
   })
 
-  const cmdPreviewCommitMessage = vscode.commands.registerCommand("diffCommit.previewCommitMessage", async () => {
+  const cmdPreviewCommitMessage = commands.registerCommand("diffCommit.previewCommitMessage", async () => {
     try {
       const commitMessage = await generateCommitMessage()
       if (!commitMessage) {
         return
       }
 
-      previewDocument = await vscode.workspace.openTextDocument({
+      previewDocument = await workspace.openTextDocument({
         content: commitMessage,
         language: "markdown",
       })
-      await vscode.window.showTextDocument(previewDocument)
+      await window.showTextDocument(previewDocument)
     } catch (error) {
-      console.error("Error opening commit message preview:", error)
-      vscode.window.showErrorMessage(
-        `Failed to open commit message preview: ${error instanceof Error ? error.message : String(error)}`,
+      console.error(`Error opening commit message preview:\n\n${error}`)
+      window.showErrorMessage(
+        `Failed to open commit message preview:\n\n${error instanceof Error ? error.message : String(error)}`,
       )
     }
   })
 
-  const onSave = vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
+  const onSave = workspace.onDidSaveTextDocument((document: TextDocument) => {
     if (document === previewDocument) {
       gitManager.setCommitMessage(document.getText())
     }
   })
 
-  const onClose = vscode.workspace.onDidCloseTextDocument((document: vscode.TextDocument) => {
+  const onClose = workspace.onDidCloseTextDocument((document: TextDocument) => {
     if (document === previewDocument) {
       previewDocument = undefined
     }
