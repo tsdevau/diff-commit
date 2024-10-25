@@ -7,6 +7,8 @@ const defaultTemperature = 0.4
 const defaultAllowedTypes = ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"]
 
 export function activate(context: vscode.ExtensionContext) {
+  let previewDocument: vscode.TextDocument | undefined
+
   function getRepo(): any | undefined {
     const gitExtension = vscode.extensions.getExtension("vscode.git")?.exports
     if (!gitExtension) {
@@ -236,12 +238,11 @@ export function activate(context: vscode.ExtensionContext) {
         return
       }
 
-      // Create a new untitled markdown document with the commit message
-      const document = await vscode.workspace.openTextDocument({
+      previewDocument = await vscode.workspace.openTextDocument({
         content: commitMessage,
         language: "markdown",
       })
-      await vscode.window.showTextDocument(document)
+      await vscode.window.showTextDocument(previewDocument)
     } catch (error) {
       console.error("Error opening commit message preview:", error)
       vscode.window.showErrorMessage(
@@ -250,13 +251,30 @@ export function activate(context: vscode.ExtensionContext) {
     }
   })
 
-  // Push all commands to subscriptions
+  const onSave = vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
+    if (document === previewDocument) {
+      const gitRepo = getRepo()
+      if (gitRepo) {
+        gitRepo.inputBox.value = document.getText()
+      }
+    }
+  })
+
+  const onClose = vscode.workspace.onDidCloseTextDocument((document: vscode.TextDocument) => {
+    if (document === previewDocument) {
+      previewDocument = undefined
+    }
+  })
+
+  // Push all commands and listeners to subscriptions
   context.subscriptions.push(
     cmdGenerateCommitMessage,
     cmdPreviewCommitMessage,
     cmdUpdateAPIKey,
     cmdGetAPIKey,
     cmdDeleteAPIKey,
+    onSave,
+    onClose,
   )
 }
 
