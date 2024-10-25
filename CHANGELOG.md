@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.8](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.7...diff-commit-v0.0.8) (2024-10-25)
+
+
+### DX Maintenance & Configuration
+
+* **build:** fix build configuration and ignore patterns ([bffdb9d](https://github.com/tsdevau/diff-commit/commit/bffdb9d504acc5bfbb6e06ed439be9951be03afc))
+
 ## [0.0.7](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.6...diff-commit-v0.0.7) (2024-10-25)
 
 
