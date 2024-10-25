@@ -185,10 +185,10 @@ describe("Error Handling", () => {
       await mockCommands["diffCommit.generateCommitMessage"]()
 
       expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Bad request. Review your prompt and try again.")
-      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (400):", "Bad request")
+      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (400):\n\nBad request")
     })
 
-    it("handles 401 Unauthorized error", async () => {
+    it("handles 401 Unauthorised error", async () => {
       const apiError = new Anthropic.APIError(401, "Invalid API key", "api_error", {})
       mockAnthropicCreate.mockRejectedValue(apiError)
 
@@ -198,7 +198,7 @@ describe("Error Handling", () => {
       expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
         "Invalid API key. Please update your API key and try again.",
       )
-      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (401):", "Invalid API key")
+      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (401):\n\nInvalid API key")
     })
 
     it("handles 403 Forbidden error", async () => {
@@ -211,7 +211,7 @@ describe("Error Handling", () => {
       expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
         "Permission Denied. Review your prompt or API key and try again.",
       )
-      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (403):", "Permission denied")
+      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (403):\n\nPermission denied")
     })
 
     it("handles 429 Rate Limit error", async () => {
@@ -222,9 +222,9 @@ describe("Error Handling", () => {
       await mockCommands["diffCommit.generateCommitMessage"]()
 
       expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
-        "Rate limit exceeded. Please try again later: Too many requests",
+        "Rate limit exceeded. Please try again later:\n\nToo many requests",
       )
-      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (429):", "Too many requests")
+      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (429):\n\nToo many requests")
     })
 
     it("handles 500 Server error", async () => {
@@ -235,7 +235,7 @@ describe("Error Handling", () => {
       await mockCommands["diffCommit.generateCommitMessage"]()
 
       expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Anthropic API server error. Please try again later.")
-      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (500):", "Internal server error")
+      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (500):\n\nInternal server error")
     })
 
     it("handles unknown API error status", async () => {
@@ -245,8 +245,8 @@ describe("Error Handling", () => {
       activate(mockContext)
       await mockCommands["diffCommit.generateCommitMessage"]()
 
-      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Failed to generate commit message: Unknown error")
-      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (418):", "Unknown error")
+      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Failed to generate commit message:\n\nUnknown error")
+      expect(console.error).toHaveBeenCalledWith("Anthropic API Error (418):\n\nUnknown error")
     })
   })
 
@@ -284,8 +284,8 @@ describe("Error Handling", () => {
     await mockCommands["diffCommit.generateCommitMessage"]()
 
     // Verify console.error was called with the expected error
-    expect(console.error).toHaveBeenCalledWith("Error writing commit message to SCM:", expect.any(Error))
-    expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Failed to write to SCM: SCM error")
+    expect(console.error).toHaveBeenCalledWith("Error writing commit message to SCM:\n\nError: SCM error")
+    expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Failed to write to SCM:\n\nSCM error")
     // Verify finally block still logs
     expect(console.log).toHaveBeenCalledWith("[DiffCommit] Stop Reason: ", mockMessage.stop_reason)
     expect(console.log).toHaveBeenCalledWith("[DiffCommit] Usage: ", mockMessage.usage)
@@ -322,9 +322,9 @@ describe("Error Handling", () => {
     await mockCommands["diffCommit.previewCommitMessage"]()
 
     // Verify console.error was called with the expected error
-    expect(console.error).toHaveBeenCalledWith("Error opening commit message preview:", expect.any(Error))
+    expect(console.error).toHaveBeenCalledWith("Error opening commit message preview:\n\nError: Show document error")
     expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
-      "Failed to open commit message preview: Show document error",
+      "Failed to open commit message preview:\n\nShow document error",
     )
     // Verify finally block still logs
     expect(console.log).toHaveBeenCalledWith("[DiffCommit] Stop Reason: ", mockMessage.stop_reason)
