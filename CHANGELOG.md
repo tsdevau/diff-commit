@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.1.0](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.8...diff-commit-v0.1.0) (2024-10-25)
+
+
+### Features, Additions & Updates
+
+* **preview:** sync preview document with git input box on save ([d20b00d](https://github.com/tsdevau/diff-commit/commit/d20b00d50cfe9e57e1e5e7c55c4bab81792e7071))
+
+
+### DX Maintenance & Configuration
+
+* **build:** add node_modules to VSCode ignore patterns ([328a912](https://github.com/tsdevau/diff-commit/commit/328a9125a23df846eced0ae1de7b0fda0de6439b))
+* **build:** add typescript declaration files to vscodeignore ([5169df0](https://github.com/tsdevau/diff-commit/commit/5169df079c5e6a0f4e715b9c6c5118f95834421b))
+
+
+### DX Testing
+
+* **testing:** enhance test mocks and refactor test structure ([6e27934](https://github.com/tsdevau/diff-commit/commit/6e2793431ad93239505950a3e8e6e9273b3a7ee8))
+
+
+### DX Continuous Integrations
+
+* **release-please:** remove bump-patch-for-minor-pre-major config ([1b00a71](https://github.com/tsdevau/diff-commit/commit/1b00a71c0fc5696996ef0978157760bd934a4900))
+
 ## [0.0.8](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.7...diff-commit-v0.0.8) (2024-10-25)
 
 
