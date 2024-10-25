@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.0.7](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.6...diff-commit-v0.0.7) (2024-10-25)
+
+
+### Features, Additions & Updates
+
+* **config:** add Jest testing framework and enhance extension capabilities ([4f85448](https://github.com/tsdevau/diff-commit/commit/4f85448ce9079236bf4045170cb5224d8b1417cc))
+* **extension:** improve error handling and add API key management ([53aa617](https://github.com/tsdevau/diff-commit/commit/53aa617ae97be5898c388b9a34579630943c3d41))
+* **testing:** migrate from Vitest to Jest ([9cb4492](https://github.com/tsdevau/diff-commit/commit/9cb449280ddff25c8857ff44d3f9a628f6006869))
+
+
+### Documentation
+
+* **readme:** enhance documentation with installation, workflow and configuration details ([7190aa2](https://github.com/tsdevau/diff-commit/commit/7190aa2eb531d59239ff6867508f3010994520e7))
+
+
+### DX Maintenance & Configuration
+
+* **build:** update .vscodeignore patterns for better package management ([9cc0f64](https://github.com/tsdevau/diff-commit/commit/9cc0f6414b42b4b3926aa54d2c315761011ebd70))
+
+
+### DX Testing
+
+* **testing:** add comprehensive test suite for core functionality ([e6a7727](https://github.com/tsdevau/diff-commit/commit/e6a7727f802baa535bf66093616edb40ef996672))
+
+
+### DX Continuous Integrations
+
+* **workflow:** remove redundant build step from vsce publish action ([c083da3](https://github.com/tsdevau/diff-commit/commit/c083da3c60ef0329dd30ee2bb0e499ba2b7e44cf))
+
 ## [0.0.6](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.5...diff-commit-v0.0.6) (2024-10-24)
 
 
