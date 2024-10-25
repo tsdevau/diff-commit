@@ -1,22 +1,23 @@
-import * as vscode from "vscode"
+import { extensions, window } from "vscode"
+import { GitExtension } from "./git"
 
 export class GitManager {
-  getRepo(): any | undefined {
-    const gitExtension = vscode.extensions.getExtension("vscode.git")?.exports
+  getRepo() {
+    const gitExtension = extensions.getExtension<GitExtension>("vscode.git")?.exports
     if (!gitExtension) {
-      vscode.window.showErrorMessage("Git extension not found")
+      window.showErrorMessage("Git extension not found")
       return undefined
     }
     const gitAPI = gitExtension.getAPI(1)
     const gitRepo = gitAPI.repositories[0]
     if (!gitRepo) {
-      vscode.window.showErrorMessage("No Git repository found")
+      window.showErrorMessage("No Git repository found")
       return undefined
     }
     return gitRepo
   }
 
-  async getDiff(): Promise<string | undefined> {
+  async getDiff() {
     const gitRepo = this.getRepo()
     if (!gitRepo) {
       return undefined
@@ -25,7 +26,7 @@ export class GitManager {
     return await gitRepo.diff(true)
   }
 
-  setCommitMessage(message: string): void {
+  setCommitMessage(message: string) {
     const gitRepo = this.getRepo()
     if (gitRepo) {
       gitRepo.inputBox.value = message
