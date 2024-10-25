@@ -1,17 +1,14 @@
-import * as vscode from "vscode"
+import { workspace } from "vscode"
 
 export interface CommitConfig {
-  customInstructions?: string
   allowedTypes: string[]
-  model: string
+  customInstructions?: string
   maxTokens: number
+  model: string
   temperature: number
 }
 
 export class ConfigManager {
-  private static readonly defaultModel = "claude-3-5-sonnet-latest"
-  private static readonly defaultMaxTokens = 1024
-  private static readonly defaultTemperature = 0.4
   private static readonly defaultAllowedTypes = [
     "feat",
     "fix",
@@ -23,15 +20,18 @@ export class ConfigManager {
     "perf",
     "ci",
   ]
+  private static readonly defaultMaxTokens = 1024
+  private static readonly defaultModel = "claude-3-5-sonnet-latest"
+  private static readonly defaultTemperature = 0.4
 
   getConfig(): CommitConfig {
-    const config = vscode.workspace.getConfiguration("diffCommit")
+    const config = workspace.getConfiguration("diffCommit")
 
     return {
-      customInstructions: config.get<string>("customInstructions"),
       allowedTypes: config.get<string[]>("allowedTypes") || ConfigManager.defaultAllowedTypes,
-      model: config.get<string>("model") || ConfigManager.defaultModel,
+      customInstructions: config.get<string>("customInstructions"),
       maxTokens: config.get<number>("maxTokens") || ConfigManager.defaultMaxTokens,
+      model: config.get<string>("model") || ConfigManager.defaultModel,
       temperature: config.get<number>("temperature") || ConfigManager.defaultTemperature,
     }
   }
