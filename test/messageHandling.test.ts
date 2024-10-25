@@ -1,4 +1,4 @@
-import { commands, extensions, Uri, workspace, type ExtensionContext, type WorkspaceConfiguration } from "vscode"
+import * as vscode from "vscode"
 import { activate } from "../src/extension"
 
 // Mock Anthropic SDK
@@ -13,60 +13,16 @@ jest.mock("@anthropic-ai/sdk", () => {
   }
 })
 
-// Define the mock workspace type
-type MockWorkspace = {
-  workspaceFolders: { uri: Uri; name: string; index: number }[] | undefined
-  getConfiguration: jest.Mock
-  openTextDocument: jest.Mock
-}
-
-jest.mock("vscode", () => {
-  const original = jest.requireActual("vscode")
-
-  // Create mock Uri
-  const mockUri = {
-    scheme: "file",
-    authority: "",
-    path: "/test/workspace",
-    query: "",
-    fragment: "",
-    fsPath: "/test/workspace",
-    with: jest.fn(),
-    toJSON: jest.fn(),
-  } as Uri
-
-  // Create mock workspace
-  const mockWorkspace: MockWorkspace = {
-    workspaceFolders: [{ uri: mockUri, name: "test", index: 0 }],
-    getConfiguration: jest.fn(),
-    openTextDocument: jest.fn(),
-  }
-
-  return {
-    ...original,
-    workspace: mockWorkspace,
-  }
-})
-
-// Get the mocked workspace
-const mockWorkspace = workspace as unknown as MockWorkspace
+jest.mock("vscode")
 
 describe("Message Handling", () => {
-  let mockContext: ExtensionContext
-  let registeredCommands: Map<string, Function>
+  let mockContext: any
   let configGetMock: jest.Mock
   let mockAnthropicSDK: any
   let mockGitRepo: any
 
   beforeEach(() => {
     jest.clearAllMocks()
-    registeredCommands = new Map()
-
-    // Mock command registration
-    jest.spyOn(commands, "registerCommand").mockImplementation((commandId: string, callback: Function) => {
-      registeredCommands.set(commandId, callback)
-      return { dispose: jest.fn() }
-    })
 
     // Mock context with secrets
     mockContext = {
@@ -76,27 +32,57 @@ describe("Message Handling", () => {
         store: jest.fn(),
         delete: jest.fn(),
       },
-    } as unknown as ExtensionContext
+    }
 
     // Reset workspace configuration mock
     configGetMock = jest.fn()
-    const mockConfig: Partial<WorkspaceConfiguration> = {
-      get: configGetMock,
-    }
-    mockWorkspace.getConfiguration.mockReturnValue(mockConfig)
+    ;(vscode.workspace.getConfiguration as jest.Mock).mockImplementation((section?: string) => {
+      if (section === "diffCommit") {
+        return {
+          get: configGetMock,
+        }
+      }
+      return {
+        get: jest.fn(),
+      }
+    })
 
     // Get reference to mocked Anthropic SDK
     mockAnthropicSDK = require("@anthropic-ai/sdk").default
 
-    // Setup mock Git repo
+    // Setup mock Git repo with proper structure
     mockGitRepo = {
-      diff: jest.fn().mockResolvedValue("test diff"),
+      state: {
+        HEAD: {
+          name: "main",
+        },
+      },
       inputBox: { value: "" },
+      diff: jest.fn().mockResolvedValue("test diff"),
     }
-    const mockGitAPI = { repositories: [mockGitRepo] }
-    jest.spyOn(extensions, "getExtension").mockReturnValue({
-      exports: { getAPI: jest.fn().mockReturnValue(mockGitAPI) },
-    } as any)
+
+    // Mock Git extension with proper API structure
+    const mockGitExtension = {
+      exports: {
+        getAPI: (version: number) => ({
+          repositories: [mockGitRepo],
+        }),
+      },
+    }
+
+    ;(vscode.extensions.getExtension as jest.Mock).mockImplementation((extensionId: string) => {
+      if (extensionId === "vscode.git") {
+        return mockGitExtension
+      }
+      return undefined
+    })
+
+    // Mock workspace event handlers
+    ;(vscode.workspace.onDidSaveTextDocument as jest.Mock).mockReturnValue({ dispose: jest.fn() })
+    ;(vscode.workspace.onDidCloseTextDocument as jest.Mock).mockReturnValue({ dispose: jest.fn() })
+
+    // Mock workspace folders
+    ;(vscode.workspace.workspaceFolders as any) = [{ uri: { fsPath: "/test/workspace" } }]
   })
 
   describe("Message Formatting", () => {
@@ -104,18 +90,19 @@ describe("Message Handling", () => {
       const messageWithBullets = "feat(scope): changes\n* Change 1\n* Change 2"
       const expectedMessage = "feat(scope): changes\n- Change 1\n- Change 2"
 
+      // Mock Anthropic response
       mockAnthropicSDK.mockImplementation(() => ({
         messages: {
           create: jest.fn().mockResolvedValue({
             content: [{ type: "text", text: messageWithBullets }],
+            stop_reason: "end_turn",
+            usage: { input_tokens: 10, output_tokens: 20 },
           }),
         },
       }))
 
       await activate(mockContext)
-      const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-      await generateCommitMessage?.()
-
+      await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
       expect(mockGitRepo.inputBox.value).toBe(expectedMessage)
     })
 
@@ -127,14 +114,14 @@ describe("Message Handling", () => {
         messages: {
           create: jest.fn().mockResolvedValue({
             content: [{ type: "text", text: messageWithBullets }],
+            stop_reason: "end_turn",
+            usage: { input_tokens: 10, output_tokens: 20 },
           }),
         },
       }))
 
       await activate(mockContext)
-      const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-      await generateCommitMessage?.()
-
+      await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
       expect(mockGitRepo.inputBox.value).toBe(expectedMessage)
     })
   })
@@ -145,14 +132,14 @@ describe("Message Handling", () => {
         messages: {
           create: jest.fn().mockResolvedValue({
             content: [{ type: "image", text: "some-image-data" }],
+            stop_reason: "end_turn",
+            usage: { input_tokens: 10, output_tokens: 20 },
           }),
         },
       }))
 
       await activate(mockContext)
-      const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-      await generateCommitMessage?.()
-
+      await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
       expect(mockGitRepo.inputBox.value).toBe("")
     })
 
@@ -161,14 +148,14 @@ describe("Message Handling", () => {
         messages: {
           create: jest.fn().mockResolvedValue({
             content: undefined,
+            stop_reason: "end_turn",
+            usage: { input_tokens: 10, output_tokens: 20 },
           }),
         },
       }))
 
       await activate(mockContext)
-      const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-      await generateCommitMessage?.()
-
+      await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
       expect(mockGitRepo.inputBox.value).toBe("")
     })
 
@@ -177,14 +164,14 @@ describe("Message Handling", () => {
         messages: {
           create: jest.fn().mockResolvedValue({
             content: [],
+            stop_reason: "end_turn",
+            usage: { input_tokens: 10, output_tokens: 20 },
           }),
         },
       }))
 
       await activate(mockContext)
-      const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-      await generateCommitMessage?.()
-
+      await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
       expect(mockGitRepo.inputBox.value).toBe("")
     })
   })
@@ -199,14 +186,14 @@ describe("Message Handling", () => {
               { type: "text", text: "* Change 1\n" },
               { type: "text", text: "* Change 2" },
             ],
+            stop_reason: "end_turn",
+            usage: { input_tokens: 10, output_tokens: 20 },
           }),
         },
       }))
 
       await activate(mockContext)
-      const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-      await generateCommitMessage?.()
-
+      await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
       expect(mockGitRepo.inputBox.value).toBe("feat(scope): changes\n\n- Change 1\n\n- Change 2")
     })
 
@@ -219,14 +206,14 @@ describe("Message Handling", () => {
               { type: "image", text: "some-image" },
               { type: "text", text: "* Change 1" },
             ],
+            stop_reason: "end_turn",
+            usage: { input_tokens: 10, output_tokens: 20 },
           }),
         },
       }))
 
       await activate(mockContext)
-      const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-      await generateCommitMessage?.()
-
+      await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
       expect(mockGitRepo.inputBox.value).toBe("feat(scope): changes\n\n- Change 1")
     })
   })

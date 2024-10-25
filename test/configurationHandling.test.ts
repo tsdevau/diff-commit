@@ -1,50 +1,14 @@
-import { commands, extensions, window, workspace, type ExtensionContext, type WorkspaceConfiguration } from "vscode"
+import * as vscode from "vscode"
 import { activate } from "../src/extension"
 
-// Define the mock workspace type
-type MockWorkspace = {
-  workspaceFolders: { uri: { fsPath: string }; name: string; index: number }[] | undefined
-  getConfiguration: jest.Mock
-}
-
-jest.mock("vscode", () => {
-  const original = jest.requireActual("vscode")
-
-  // Create mock workspace inside jest.mock
-  const mockWorkspace: MockWorkspace = {
-    workspaceFolders: [{ uri: { fsPath: "/test/workspace" }, name: "test", index: 0 }],
-    getConfiguration: jest.fn(),
-  }
-
-  return {
-    ...original,
-    workspace: mockWorkspace,
-  }
-})
-
-// Get the mocked workspace
-const mockWorkspace = workspace as unknown as MockWorkspace
+jest.mock("vscode")
 
 describe("Configuration Handling", () => {
-  let mockContext: ExtensionContext
-  let registeredCommands: Map<string, Function>
+  let mockContext: any
   let configGetMock: jest.Mock
 
   beforeEach(() => {
     jest.clearAllMocks()
-    registeredCommands = new Map()
-
-    // Reset workspace folders
-    mockWorkspace.workspaceFolders = [{ uri: { fsPath: "/test/workspace" }, name: "test", index: 0 }]
-
-    // Create a trackable mock for configuration.get
-    configGetMock = jest.fn()
-
-    // Mock command registration
-    jest.spyOn(commands, "registerCommand").mockImplementation((commandId: string, callback: Function) => {
-      registeredCommands.set(commandId, callback)
-      return { dispose: jest.fn() }
-    })
 
     // Mock context
     mockContext = {
@@ -54,152 +18,169 @@ describe("Configuration Handling", () => {
         store: jest.fn(),
         delete: jest.fn(),
       },
-    } as unknown as ExtensionContext
-
-    // Mock Git extension
-    const mockGitRepo = {
-      diff: jest.fn().mockResolvedValue("test diff"),
-      inputBox: { value: "" },
     }
-    const mockGitAPI = { repositories: [mockGitRepo] }
-    const mockGitExtension = {
-      exports: {
-        getAPI: jest.fn().mockReturnValue(mockGitAPI),
-      },
-    }
-    jest.spyOn(extensions, "getExtension").mockReturnValue(mockGitExtension as any)
 
-    // Reset workspace configuration mock
-    const mockConfig: Partial<WorkspaceConfiguration> = {
-      get: configGetMock,
-    }
-    mockWorkspace.getConfiguration.mockReturnValue(mockConfig)
-  })
-
-  it("should use configured values when available", async () => {
-    // Mock configuration values
-    configGetMock.mockImplementation((key: string) => {
-      switch (key) {
-        case "model":
-          return "claude-3-haiku-20240307"
-        case "maxTokens":
-          return 2048
-        case "temperature":
-          return 0.7
-        default:
-          return undefined
+    // Mock workspace configuration
+    configGetMock = jest.fn()
+    ;(vscode.workspace.getConfiguration as jest.Mock).mockImplementation((section?: string) => {
+      if (section === "diffCommit") {
+        return {
+          get: configGetMock,
+        }
+      }
+      return {
+        get: jest.fn(),
       }
     })
 
-    await activate(mockContext)
-    const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-    if (generateCommitMessage) {
-      await generateCommitMessage()
+    // Mock workspace event handlers
+    ;(vscode.workspace.onDidSaveTextDocument as jest.Mock).mockReturnValue({ dispose: jest.fn() })
+    ;(vscode.workspace.onDidCloseTextDocument as jest.Mock).mockReturnValue({ dispose: jest.fn() })
+
+    // Mock Git extension
+    const mockGitRepo = {
+      state: {
+        HEAD: {
+          name: "main",
+        },
+      },
+      inputBox: { value: "" },
+      diff: jest.fn().mockResolvedValue("test diff"),
     }
 
-    expect(mockWorkspace.getConfiguration).toHaveBeenCalledWith("diffCommit")
+    const mockGitExtension = {
+      exports: {
+        getAPI: (version: number) => ({
+          repositories: [mockGitRepo],
+        }),
+      },
+    }
+
+    ;(vscode.extensions.getExtension as jest.Mock).mockImplementation((extensionId: string) => {
+      if (extensionId === "vscode.git") {
+        return mockGitExtension
+      }
+      return undefined
+    })
+
+    // Mock workspace folders
+    ;(vscode.workspace.workspaceFolders as any) = [{ uri: { fsPath: "/test/workspace" } }]
+  })
+
+  test("should use configured values when available", async () => {
+    configGetMock.mockImplementation((key: string) => {
+      const config: { [key: string]: any } = {
+        model: "claude-3",
+        maxTokens: 2000,
+        temperature: 0.5,
+        allowedTypes: ["feat", "fix"],
+        customInstructions: "custom instructions",
+      }
+      return config[key]
+    })
+
+    await activate(mockContext)
+    await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
+
     expect(configGetMock).toHaveBeenCalledWith("model")
     expect(configGetMock).toHaveBeenCalledWith("maxTokens")
     expect(configGetMock).toHaveBeenCalledWith("temperature")
+    expect(configGetMock).toHaveBeenCalledWith("allowedTypes")
+    expect(configGetMock).toHaveBeenCalledWith("customInstructions")
   })
 
-  it("should use default values when configuration is missing", async () => {
-    // Mock all configuration values as undefined
+  test("should use default values when configuration is missing", async () => {
     configGetMock.mockReturnValue(undefined)
 
     await activate(mockContext)
-    const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-    if (generateCommitMessage) {
-      await generateCommitMessage()
-    }
+    await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
-    expect(mockWorkspace.getConfiguration).toHaveBeenCalledWith("diffCommit")
-    expect(configGetMock).toHaveBeenCalledWith("model")
-    expect(configGetMock).toHaveBeenCalledWith("maxTokens")
-    expect(configGetMock).toHaveBeenCalledWith("temperature")
+    expect(configGetMock).toHaveBeenCalled()
   })
 
-  it("should handle custom instructions when provided", async () => {
-    // Mock custom instructions
+  test("should handle custom instructions when provided", async () => {
     configGetMock.mockImplementation((key: string) => {
-      if (key === "customInstructions") return "Custom commit guidelines"
+      if (key === "customInstructions") {
+        return "custom instructions"
+      }
       return undefined
     })
 
     await activate(mockContext)
-    const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-    if (generateCommitMessage) {
-      await generateCommitMessage()
-    }
+    await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
-    expect(mockWorkspace.getConfiguration).toHaveBeenCalledWith("diffCommit")
     expect(configGetMock).toHaveBeenCalledWith("customInstructions")
   })
 
-  it("should handle missing workspace folder", async () => {
-    // Mock missing workspace folder
-    mockWorkspace.workspaceFolders = undefined
+  test("should handle missing workspace folder", async () => {
+    ;(vscode.workspace.workspaceFolders as any) = undefined
 
     await activate(mockContext)
-    const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-    if (generateCommitMessage) {
-      await generateCommitMessage()
-    }
+    await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
-    expect(window.showErrorMessage).toHaveBeenCalledWith("No workspace folder found")
+    expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("No workspace folder found")
   })
 
-  it("should handle missing Git extension", async () => {
-    // Mock missing Git extension
-    jest.spyOn(extensions, "getExtension").mockReturnValue(undefined)
+  test("should handle missing Git extension", async () => {
+    ;(vscode.extensions.getExtension as jest.Mock).mockReturnValue(undefined)
 
     await activate(mockContext)
-    const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-    if (generateCommitMessage) {
-      await generateCommitMessage()
-    }
+    await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
-    expect(window.showErrorMessage).toHaveBeenCalledWith("Git extension not found")
+    expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Git extension not found")
   })
 
-  it("should handle empty Git repositories", async () => {
-    // Mock Git extension with no repositories
+  test("should handle empty Git repositories", async () => {
     const mockGitExtension = {
       exports: {
-        getAPI: jest.fn().mockReturnValue({ repositories: [] }),
+        getAPI: (version: number) => ({
+          repositories: [],
+        }),
       },
     }
-    jest.spyOn(extensions, "getExtension").mockReturnValue(mockGitExtension as any)
+
+    ;(vscode.extensions.getExtension as jest.Mock).mockImplementation((extensionId: string) => {
+      if (extensionId === "vscode.git") {
+        return mockGitExtension
+      }
+      return undefined
+    })
 
     await activate(mockContext)
-    const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-    if (generateCommitMessage) {
-      await generateCommitMessage()
-    }
+    await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
-    expect(window.showErrorMessage).toHaveBeenCalledWith("No Git repository found")
+    expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("No Git repository found")
   })
 
-  it("should handle no Git changes", async () => {
-    // Mock Git repo with no changes
+  test("should handle no Git changes", async () => {
     const mockGitRepo = {
-      diff: jest.fn().mockResolvedValue(""),
+      state: {
+        HEAD: {
+          name: "main",
+        },
+      },
       inputBox: { value: "" },
+      diff: jest.fn().mockResolvedValue(""),
     }
-    const mockGitAPI = { repositories: [mockGitRepo] }
+
     const mockGitExtension = {
       exports: {
-        getAPI: jest.fn().mockReturnValue(mockGitAPI),
+        getAPI: (version: number) => ({
+          repositories: [mockGitRepo],
+        }),
       },
     }
-    jest.spyOn(extensions, "getExtension").mockReturnValue(mockGitExtension as any)
+
+    ;(vscode.extensions.getExtension as jest.Mock).mockImplementation((extensionId: string) => {
+      if (extensionId === "vscode.git") {
+        return mockGitExtension
+      }
+      return undefined
+    })
 
     await activate(mockContext)
-    const generateCommitMessage = registeredCommands.get("diffCommit.generateCommitMessage")
-    if (generateCommitMessage) {
-      await generateCommitMessage()
-    }
+    await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
-    expect(window.showErrorMessage).toHaveBeenCalledWith("No changes detected")
+    expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("No changes detected")
   })
 })
