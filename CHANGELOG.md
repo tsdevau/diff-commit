@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.1.0...diff-commit-v0.1.1) (2024-10-26)
+
+
+### Documentation
+
+* **readme:** add table of contents and configuration details ([c13dccf](https://github.com/tsdevau/diff-commit/commit/c13dccf5cc808528cc1e32b82defc7006b6fc0a3))
+
 ## [0.1.0](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.0.8...diff-commit-v0.1.0) (2024-10-25)
 
 
