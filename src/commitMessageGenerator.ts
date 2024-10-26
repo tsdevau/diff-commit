@@ -23,6 +23,7 @@ export class CommitMessageGenerator {
       - Use ONLY ${config.allowedTypes.map((val) => `'${val}'`).join(" | ")} as appropriate for the type of change.
       - Always include a scope.
       - Never use '!' or 'BREAKING CHANGE' in the commit message.
+      - Avoid excessive adjectives like 'enhance', 'comprehensive' etc
       - Output will use markdown formatting for lists etc.
       - Output will ONLY contain the commit message.
       - Do not explain the output.
