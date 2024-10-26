@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.1.1...diff-commit-v0.1.2) (2024-10-26)
+
+
+### Bug Fixes
+
+* **message-generator:** tweak prompt to keep message concise and focussed ([d7f843a](https://github.com/tsdevau/diff-commit/commit/d7f843a79380d350abe069308ad983efd743eb12))
+
 ## [0.1.1](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.1.0...diff-commit-v0.1.1) (2024-10-26)
 
 
