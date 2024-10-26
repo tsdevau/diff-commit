@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.3](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.1.2...diff-commit-v0.1.3) (2024-10-26)
+
+
+### Documentation
+
+* **readme:** update documentation with screenshots and tables ([553d886](https://github.com/tsdevau/diff-commit/commit/553d886a6eb03b3a1aaae96a101e527a42b50051))
+* **screenshots:** add demo videos for diff-commit commands ([e6557a9](https://github.com/tsdevau/diff-commit/commit/e6557a9ab97916c63ee619f3b0d09b804e9ca15c))
+* **screenshots:** add gif demos for diff-commit commands ([bcc4240](https://github.com/tsdevau/diff-commit/commit/bcc42404bcc29c3b962ede42be37e8b729a427d9))
+* **screenshots:** remove unused mp4 files from screenshots directory ([3fdc585](https://github.com/tsdevau/diff-commit/commit/3fdc5850a4082dac712e968f2d254438a24ecc27))
+
 ## [0.1.2](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.1.1...diff-commit-v0.1.2) (2024-10-26)
 
 
