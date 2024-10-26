@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.1.3...diff-commit-v0.1.4) (2024-10-26)
+
+
+### Documentation
+
+* **readme:** fix readme error handling subsection ([842ccca](https://github.com/tsdevau/diff-commit/commit/842cccaa4a3367274e8f11a984e9924b34a39181))
+
 ## [0.1.3](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.1.2...diff-commit-v0.1.3) (2024-10-26)
 
 
