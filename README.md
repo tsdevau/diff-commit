@@ -26,9 +26,9 @@ The generated commit messages are compatible with [googleapis/release-please](ht
     - [`diffCommit.maxTokens`](#diffcommitmaxtokens)
     - [`diffCommit.temperature`](#diffcommittemperature)
   - [Error Handling](#error-handling)
-  - [Local Development](#local-development)
-    - [Local Testing](#local-testing)
   - [Contributing](#contributing)
+    - [Local Development](#local-development)
+    - [Local Testing](#local-testing)
   - [License](#license)
 
 ## Features
@@ -172,7 +172,11 @@ Diff Commit accommodates error handling to provide clear feedback and assist in 
 
 If you encounter any of these errors, Diff Commit will display a message with more details. For persistent issues, please check your configuration and if appropriate, raise an issue on [GitHub](https://github.com/tsdevau/diff-commit/issues).
 
-## Local Development
+## Contributing
+
+Feature requests, suggestions and contributions to Diff Commit are welcome! Please feel free to submit an idea or Pull Request.
+
+### Local Development
 
 1. Clone the [repository](https://github.com/tsdevau/diff-commit)
 2. Install dependencies: `pnpm install`
@@ -184,10 +188,6 @@ If you encounter any of these errors, Diff Commit will display a message with mo
 1. Press F5 (<kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> and select `Debug: Start Debugging`) to start the debugger
 2. This will open a new VSCode window with the extension loaded
 3. Make changes to files and use the source control panel to test the extension
-
-## Contributing
-
-Feature requests, suggestions and contributions to Diff Commit are welcome! Please feel free to submit an idea or Pull Request.
 
 ## License
 
