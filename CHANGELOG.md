@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.1.4...diff-commit-v0.2.0) (2024-11-05)
+
+
+### Features, Additions & Updates
+
+* **config:** adjust default AI temperature from 0.4 to 0.3 ([9e10e58](https://github.com/tsdevau/diff-commit/commit/9e10e5861fea474e2807a0ca46f80b820063c4ab))
+* **ui:** add progress notification for commit message generation ([1b497b0](https://github.com/tsdevau/diff-commit/commit/1b497b0a14657d99f7d3a43c1713f353750e23c2))
+
+
+### Documentation
+
+* **readme:** reorganise contributing section layout ([4c8dc0d](https://github.com/tsdevau/diff-commit/commit/4c8dc0dae2c514f643a0095a38047265c52da00d))
+
 ## [0.1.4](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.1.3...diff-commit-v0.1.4) (2024-10-26)
 
 
