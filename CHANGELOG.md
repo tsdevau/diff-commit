@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.2.1...diff-commit-v0.3.0) (2024-11-05)
+
+
+### Features, Additions & Updates
+
+* **ui:** add icons and SCM menu integration ([c051edc](https://github.com/tsdevau/diff-commit/commit/c051edcb2be0b5f454b61425d9ca0cc7a7133c2b))
+
+
+### UX Improvements
+
+* **ui:** update progress notification text and behaviour ([c3033d5](https://github.com/tsdevau/diff-commit/commit/c3033d5b0b43f50e13d3219d2140c4b22e36efd5))
+
+
+### DX Testing
+
+* **progress-api:** add integration tests for progress feedback ([c38c8c1](https://github.com/tsdevau/diff-commit/commit/c38c8c15c0e9ad893e8d28d0da6af2ad7a2b24e1))
+* **progress-api:** update progress messages and notification settings ([5b52766](https://github.com/tsdevau/diff-commit/commit/5b527669c54a7b9c6b3424bd5a3889c5521404a3))
+
 ## [0.2.1](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.2.0...diff-commit-v0.2.1) (2024-11-05)
 
 
