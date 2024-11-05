@@ -62,7 +62,7 @@ describe("Configuration Edge Cases", () => {
     mockConfig = {
       model: "claude-3-5-sonnet-latest",
       maxTokens: 1024,
-      temperature: 0.4,
+      temperature: 0.3,
       allowedTypes: ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"],
     }
 
@@ -185,7 +185,7 @@ describe("Configuration Edge Cases", () => {
 
       expect(mockAnthropicCreate).toHaveBeenCalledWith(
         expect.objectContaining({
-          temperature: 0.4,
+          temperature: 0.3,
         }),
       )
     })

@@ -45,6 +45,11 @@ const mockWindow = {
     show: jest.fn(),
     dispose: jest.fn(),
   }),
+  withProgress: jest.fn().mockImplementation((options, task) => {
+    return task({
+      report: jest.fn(),
+    })
+  }),
 }
 
 const mockExtensions = {
@@ -74,3 +79,8 @@ export const Uri = {
 // Export any additional VSCode APIs that tests need
 export const EventEmitter = jest.fn()
 export const TextDocument = jest.fn()
+export const ProgressLocation = {
+  Notification: 1,
+  SourceControl: 2,
+  Window: 3,
+}

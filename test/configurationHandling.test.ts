@@ -79,7 +79,7 @@ describe("Configuration Handling", () => {
       return config[key]
     })
 
-    await activate(mockContext)
+    activate(mockContext)
     await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
     expect(configGetMock).toHaveBeenCalledWith("model")
@@ -92,7 +92,7 @@ describe("Configuration Handling", () => {
   test("should use default values when configuration is missing", async () => {
     configGetMock.mockReturnValue(undefined)
 
-    await activate(mockContext)
+    activate(mockContext)
     await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
     expect(configGetMock).toHaveBeenCalled()
@@ -106,7 +106,7 @@ describe("Configuration Handling", () => {
       return undefined
     })
 
-    await activate(mockContext)
+    activate(mockContext)
     await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
     expect(configGetMock).toHaveBeenCalledWith("customInstructions")
@@ -115,7 +115,7 @@ describe("Configuration Handling", () => {
   test("should handle missing workspace folder", async () => {
     ;(vscode.workspace.workspaceFolders as any) = undefined
 
-    await activate(mockContext)
+    activate(mockContext)
     await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
     expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("No workspace folder found")
@@ -124,7 +124,7 @@ describe("Configuration Handling", () => {
   test("should handle missing Git extension", async () => {
     ;(vscode.extensions.getExtension as jest.Mock).mockReturnValue(undefined)
 
-    await activate(mockContext)
+    activate(mockContext)
     await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
     expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Git extension not found")
@@ -146,7 +146,7 @@ describe("Configuration Handling", () => {
       return undefined
     })
 
-    await activate(mockContext)
+    activate(mockContext)
     await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
     expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("No Git repository found")
@@ -178,7 +178,7 @@ describe("Configuration Handling", () => {
       return undefined
     })
 
-    await activate(mockContext)
+    activate(mockContext)
     await vscode.commands.executeCommand("diffCommit.generateCommitMessage")
 
     expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("No changes detected")
