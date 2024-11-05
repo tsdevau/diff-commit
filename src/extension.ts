@@ -1,4 +1,4 @@
-import { commands, window, workspace, type ExtensionContext, type TextDocument } from "vscode"
+import { commands, ProgressLocation, window, workspace, type ExtensionContext, type TextDocument } from "vscode"
 import { APIKeyManager } from "./apiKeyManager"
 import { CommitMessageGenerator } from "./commitMessageGenerator"
 import { ConfigManager } from "./configManager"
@@ -18,21 +18,33 @@ export function activate(context: ExtensionContext) {
       return undefined
     }
 
-    const diff = await gitManager.getDiff()
-    if (!diff) {
-      window.showErrorMessage("No changes detected")
-      return undefined
-    }
+    return await window.withProgress(
+      {
+        location: ProgressLocation.Notification,
+        title: "Generating commit message...",
+        cancellable: false,
+      },
+      async (progress) => {
+        progress.report({ message: "Getting git diff..." })
+        const diff = await gitManager.getDiff()
+        if (!diff) {
+          window.showErrorMessage("No changes detected")
+          return undefined
+        }
 
-    const apiKey = (await apiKeyManager.getAPIKey()) ?? (await apiKeyManager.setAPIKey())
-    if (!apiKey) {
-      window.showErrorMessage("API Key is required")
-      return undefined
-    }
+        progress.report({ message: "Checking API key..." })
+        const apiKey = (await apiKeyManager.getAPIKey()) ?? (await apiKeyManager.setAPIKey())
+        if (!apiKey) {
+          window.showErrorMessage("API Key is required")
+          return undefined
+        }
 
-    const config = configManager.getConfig()
-    const generator = new CommitMessageGenerator(apiKey)
-    return await generator.generateMessage(diff, config)
+        progress.report({ message: "Generating message..." })
+        const config = configManager.getConfig()
+        const generator = new CommitMessageGenerator(apiKey)
+        return await generator.generateMessage(diff, config)
+      },
+    )
   }
 
   // Register all commands
