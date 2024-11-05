@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.1](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.0...diff-commit-v0.3.1) (2024-11-05)
+
+
+### Features, Additions & Updates
+
+* **models:** add claude-3-5-haiku-latest to available model options ([f8f5793](https://github.com/tsdevau/diff-commit/commit/f8f5793bc784a8f40559ecc780bcd7a7bdd53539))
+
+
+### Documentation
+
+* **readme:** update features and error handling sections ([82bdf05](https://github.com/tsdevau/diff-commit/commit/82bdf055402c318b70e4c70cf5147c964d778bad))
+* **settings:** update model options and add usage tips ([3ae39d8](https://github.com/tsdevau/diff-commit/commit/3ae39d82a3b4d6e3b5ca4457a52501522357dc23))
+
+
+### DX Maintenance & Configuration
+
+* **deps:** update @anthropic-ai/sdk to v0.32.1 and dev dependencies ([3da3b01](https://github.com/tsdevau/diff-commit/commit/3da3b017eaec1e70ea42f530bef3f49ee2a9d5f1))
+
 ## [0.3.0](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.2.1...diff-commit-v0.3.0) (2024-11-05)
 
 
