@@ -21,8 +21,8 @@ export function activate(context: ExtensionContext) {
     return await window.withProgress(
       {
         location: ProgressLocation.Notification,
-        title: "Generating commit message...",
-        cancellable: false,
+        title: "Diff Commit",
+        cancellable: true,
       },
       async (progress) => {
         progress.report({ message: "Getting git diff..." })
@@ -32,14 +32,14 @@ export function activate(context: ExtensionContext) {
           return undefined
         }
 
-        progress.report({ message: "Checking API key..." })
+        progress.report({ message: "Validating API key..." })
         const apiKey = (await apiKeyManager.getAPIKey()) ?? (await apiKeyManager.setAPIKey())
         if (!apiKey) {
           window.showErrorMessage("API Key is required")
           return undefined
         }
 
-        progress.report({ message: "Generating message..." })
+        progress.report({ message: "Generating commit message..." })
         const config = configManager.getConfig()
         const generator = new CommitMessageGenerator(apiKey)
         return await generator.generateMessage(diff, config)
