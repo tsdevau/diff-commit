@@ -65,8 +65,8 @@ describe("Progress API Integration", () => {
       expect(window.withProgress).toHaveBeenCalledWith(
         {
           location: ProgressLocation.Notification,
-          title: "Generating commit message...",
-          cancellable: false,
+          title: "Diff Commit",
+          cancellable: true,
         },
         expect.any(Function),
       )
@@ -88,8 +88,8 @@ describe("Progress API Integration", () => {
       // Verify progress messages in order
       expect(mockProgress.report.mock.calls).toEqual([
         [{ message: "Getting git diff..." }],
-        [{ message: "Checking API key..." }],
-        [{ message: "Generating message..." }],
+        [{ message: "Validating API key..." }],
+        [{ message: "Generating commit message..." }],
       ])
     })
 
@@ -120,7 +120,7 @@ describe("Progress API Integration", () => {
       // Should show first two progress messages
       expect(mockProgress.report.mock.calls).toEqual([
         [{ message: "Getting git diff..." }],
-        [{ message: "Checking API key..." }],
+        [{ message: "Validating API key..." }],
       ])
 
       // Should show error message
@@ -139,7 +139,7 @@ describe("Progress API Integration", () => {
       // Should show first two progress messages
       expect(mockProgress.report.mock.calls).toEqual([
         [{ message: "Getting git diff..." }],
-        [{ message: "Checking API key..." }],
+        [{ message: "Validating API key..." }],
       ])
 
       // Should show error message
@@ -166,8 +166,8 @@ describe("Progress API Integration", () => {
       // Verify all progress messages shown
       expect(mockProgress.report.mock.calls).toEqual([
         [{ message: "Getting git diff..." }],
-        [{ message: "Checking API key..." }],
-        [{ message: "Generating message..." }],
+        [{ message: "Validating API key..." }],
+        [{ message: "Generating commit message..." }],
       ])
 
       // Verify commit message was set
