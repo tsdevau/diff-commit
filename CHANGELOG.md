@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.2.0...diff-commit-v0.2.1) (2024-11-05)
+
+
+### DX Testing
+
+* **mocks,config:** update mocks and test configs for withProgress API ([3d3e537](https://github.com/tsdevau/diff-commit/commit/3d3e5378d992bcd54c7d4e8af1d15aea5c3a03c4))
+
 ## [0.2.0](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.1.4...diff-commit-v0.2.0) (2024-11-05)
 
 
