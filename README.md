@@ -69,6 +69,9 @@ Install the extension directly from the [Visual Studio Code Marketplace](https:/
 
 DiffCommit commands can be accessed from the Command Palette (<kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>) or using the default keyboard shortcuts.
 
+> [!TIP]
+> You can reduce token use by staging only part of a group of changes, generating the commit message, then adding the remaining files before committing.
+
 ### `DiffCommit: Generate Commit Message`
 
 This will generate a commit message for staged changes and enter it in the Source Control message input box. You can preview and edit the generated message before committing. Progress is shown through notifications as the extension works.
@@ -114,11 +117,14 @@ DiffCommit provides the following settings to customise its behavior.
 
 ### `diffCommit.allowedTypes`
 
-A list of allowed commit types. If provided, this replaces the default options.
+A list of allowed commit types. If provided, this replaces the default options. You need to ensure all required commit types are included in the list.
 
 | **Type**       | **Description**                                                   | **Default Value**                                                             |
 | :------------- | :---------------------------------------------------------------- | :---------------------------------------------------------------------------- |
 | Array\<string> | A list (array) of any string/s you want available as commit types | [ "feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci" ] |
+
+> [!WARNING]
+> Changing the default, replaces the option value. If you set this option, be sure to include a complete list of all required commit types.
 
 ### `diffCommit.customInstructions`
 
@@ -132,9 +138,13 @@ Add additional custom instructions to the commit generation prompt. Useful for p
 
 The Anthropic AI model to use for generating commit messages.
 
-| **Type** | **Options**                                                                       | **Default Value**          |
-| :------- | :-------------------------------------------------------------------------------- | :------------------------- |
-| enum     | "claude-3-opus-latest" \| "claude-3-5-sonnet-latest" \| "claude-3-haiku-20240307" | "claude-3-5-sonnet-latest" |
+| **Type** | **Options**                | **Default Value**          |
+| :------- | :------------------------- | :------------------------- |
+| enum     | "claude-3-5-sonnet-latest" | "claude-3-5-sonnet-latest" |
+|          | "claude-3-5-haiku-latest"  |                            |
+|          | "claude-3-opus-latest"     |                            |
+|          | "claude-3-sonnet-20240229" |                            |
+|          | "claude-3-haiku-20240307"  |                            |
 
 ### `diffCommit.maxTokens`
 
@@ -148,7 +158,10 @@ Maximum number of tokens to generate in the response. Higher values allow for lo
 
 Controls randomness in the response. Lower values (like 0.3) produce more focused and consistent commit messages, while higher values introduce more variety.
 
-For concise, focused commit messages, I recommend the default value of 0.3. If you want a little more creativity or room for the AI model to interpret the reason for changes, try a larger value.
+> [!TIP]
+> For concise, focused & repeatable commit messages, use a value in the range of 0.1 to 0.4.
+> 
+> If you want a little more creativity or more room for the AI model to interpret the reason for changes, try a higher value like 0.7.
 
 | **Type** | **Minimum** | **Maximum** | **Default Value** |
 | :------- | :---------: | :---------: | :---------------: |
