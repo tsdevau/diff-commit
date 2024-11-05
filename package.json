@@ -38,19 +38,23 @@
     "commands": [
       {
         "command": "diffCommit.generateCommitMessage",
-        "title": "DiffCommit: Generate Commit Message"
+        "title": "DiffCommit: Generate Commit Message",
+        "icon": "$(note)"
       },
       {
         "command": "diffCommit.previewCommitMessage",
-        "title": "DiffCommit: Preview Commit Message"
+        "title": "DiffCommit: Preview Commit Message",
+        "icon": "$(file-code)"
       },
       {
         "command": "diffCommit.updateAPIKey",
-        "title": "DiffCommit: Update stored API Key"
+        "title": "DiffCommit: Update stored API Key",
+        "icon": "$(key)"
       },
       {
         "command": "diffCommit.deleteAPIKey",
-        "title": "DiffCommit: Delete stored API Key"
+        "title": "DiffCommit: Delete stored API Key",
+        "icon": "$(trash)"
       }
     ],
     "configuration": {
@@ -123,7 +127,16 @@
         "linux": "ctrl+k ctrl+p",
         "when": "!terminalFocus"
       }
-    ]
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "diffCommit.generateCommitMessage",
+          "group": "navigation",
+          "when": "scmProvider == git"
+        }
+      ]
+    }
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.30.1"
