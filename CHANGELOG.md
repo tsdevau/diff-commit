@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.3.2](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.1...diff-commit-v0.3.2) (2024-11-08)
+
+
+### Features, Additions & Updates
+
+* **config:** reorder default commit types and update default model ([e59630d](https://github.com/tsdevau/diff-commit/commit/e59630db1638be9e3f4306e9f5c9dff8a6feab46))
+* **config:** update system prompt with more detailed description ([f04d6b4](https://github.com/tsdevau/diff-commit/commit/f04d6b40b8e14241c5224fcdc911f30fd8603d60))
+
+
+### Documentation
+
+* **readme:** update commit types table formatting ([08577d5](https://github.com/tsdevau/diff-commit/commit/08577d518038831e041f8925d6c17318d464d927))
+* **readme:** update default AI model value in configuration table ([9cb2015](https://github.com/tsdevau/diff-commit/commit/9cb201560926c0460a80755084d60c3cb0d9cc37))
+
+
+### DX Maintenance & Configuration
+
+* **config:** update default AI model to Claude 3.5 Haiku ([220647c](https://github.com/tsdevau/diff-commit/commit/220647cbe50e6c559b80e67e8d04cf351becfd29))
+
+
+### DX Testing
+
+* **config:** update model and sort allowed types alphabetically ([2bd5ab4](https://github.com/tsdevau/diff-commit/commit/2bd5ab4fa84b44665e1be1a70660a0b4a93a47fb))
+
 ## [0.3.1](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.0...diff-commit-v0.3.1) (2024-11-05)
 
 
