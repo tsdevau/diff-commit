@@ -60,7 +60,7 @@ describe("Configuration Edge Cases", () => {
 
     // Reset config for each test
     mockConfig = {
-      model: "claude-3-5-sonnet-latest",
+      model: "claude-3-5-haiku-latest",
       maxTokens: 1024,
       temperature: 0.3,
       allowedTypes: ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"],
@@ -129,7 +129,7 @@ describe("Configuration Edge Cases", () => {
 
       expect(mockAnthropicCreate).toHaveBeenCalledWith(
         expect.objectContaining({
-          model: "claude-3-5-sonnet-latest",
+          model: "claude-3-5-haiku-latest",
         }),
       )
     })
@@ -239,7 +239,7 @@ describe("Configuration Edge Cases", () => {
           messages: expect.arrayContaining([
             expect.objectContaining({
               content: expect.stringContaining(
-                "'feat' | 'fix' | 'refactor' | 'chore' | 'docs' | 'style' | 'test' | 'perf' | 'ci'",
+                "'chore' | 'ci' | 'docs' | 'feat' | 'fix' | 'perf' | 'refactor' | 'style' | 'test'",
               ),
             }),
           ]),
