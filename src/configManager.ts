@@ -10,18 +10,18 @@ export interface CommitConfig {
 
 export class ConfigManager {
   private static readonly defaultAllowedTypes = [
+    "chore",
+    "ci",
+    "docs",
     "feat",
     "fix",
+    "perf",
     "refactor",
-    "chore",
-    "docs",
     "style",
     "test",
-    "perf",
-    "ci",
   ]
   private static readonly defaultMaxTokens = 1024
-  private static readonly defaultModel = "claude-3-5-sonnet-latest"
+  private static readonly defaultModel = "claude-3-5-haiku-latest"
   private static readonly defaultTemperature = 0.3
 
   getConfig(): CommitConfig {
