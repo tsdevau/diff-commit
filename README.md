@@ -119,9 +119,9 @@ DiffCommit provides the following settings to customise its behavior.
 
 A list of allowed commit types. If provided, this replaces the default options. You need to ensure all required commit types are included in the list.
 
-| **Type**       | **Description**                                                   | **Default Value**                                                             |
-| :------------- | :---------------------------------------------------------------- | :---------------------------------------------------------------------------- |
-| Array\<string> | A list (array) of any string/s you want available as commit types | [ "feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci" ] |
+| **Type**       | **Description**                                                   | **Default Value** |
+| :------------- | :---------------------------------------------------------------- | :---------------- |
+| Array\<string> | A list (array) of any string/s you want available as commit types | [ "chore"         | "ci" | "docs" | "feat" | "fix" | "perf" | "refactor" | "style" | "test" ] |
 
 > [!WARNING]
 > Changing the default, replaces the option value. If you set this option, be sure to include a complete list of all required commit types.
