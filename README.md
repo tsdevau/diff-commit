@@ -138,13 +138,13 @@ Add additional custom instructions to the commit generation prompt. Useful for p
 
 The Anthropic AI model to use for generating commit messages.
 
-| **Type** | **Options**                | **Default Value**          |
-| :------- | :------------------------- | :------------------------- |
-| enum     | "claude-3-5-sonnet-latest" | "claude-3-5-sonnet-latest" |
-|          | "claude-3-5-haiku-latest"  |                            |
-|          | "claude-3-opus-latest"     |                            |
-|          | "claude-3-sonnet-20240229" |                            |
-|          | "claude-3-haiku-20240307"  |                            |
+| **Type** | **Options**                | **Default Value**         |
+| :------- | :------------------------- | :------------------------ |
+| enum     | "claude-3-5-sonnet-latest" | "claude-3-5-haiku-latest" |
+|          | "claude-3-5-haiku-latest"  |                           |
+|          | "claude-3-opus-latest"     |                           |
+|          | "claude-3-sonnet-20240229" |                           |
+|          | "claude-3-haiku-20240307"  |                           |
 
 ### `diffCommit.maxTokens`
 
