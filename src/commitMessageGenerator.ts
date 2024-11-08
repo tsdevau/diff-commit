@@ -11,7 +11,7 @@ export class CommitMessageGenerator {
     })
 
     const systemPrompt =
-      "You are a seasoned software developer with an extraordinary ability for writing detailed conventional commit messages and following 'instructions' and 'customInstructions' when generating them."
+      "You are a seasoned software engineer with more than 25 years of experience with an extraordinary ability for assessing and interpreting git diffs and writing detailed conventional commit messages and following 'instructions' and 'customInstructions' when generating them."
 
     const prompt = `
       <task>
@@ -21,6 +21,7 @@ export class CommitMessageGenerator {
       </task>
       <instructions>
       - Use ONLY ${config.allowedTypes.map((val) => `'${val}'`).join(" | ")} as appropriate for the type of change.
+      - When assessing the commit type, consider the real impact of the change on the codebase and reserve 'feat' for significant changes or true feature additions.
       - Always include a scope.
       - Never use '!' or 'BREAKING CHANGE' in the commit message.
       - Avoid excessive adjectives like 'enhance', 'comprehensive' etc
