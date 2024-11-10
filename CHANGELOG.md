@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.3...diff-commit-v0.3.4) (2024-11-10)
+
+
+### Features, Additions & Updates
+
+* **instruction-prompt:** update commit message instructions ([2fc9500](https://github.com/tsdevau/diff-commit/commit/2fc9500c46ada6f8dfe50ca68a04b459a7013521))
+
 ## [0.3.3](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.2...diff-commit-v0.3.3) (2024-11-10)
 
 
