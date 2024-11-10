@@ -14,23 +14,40 @@ export class CommitMessageGenerator {
       "You are a seasoned software engineer with more than 25 years of experience with an extraordinary ability for assessing and interpreting git diffs and writing detailed conventional commit messages and following 'instructions' and 'customInstructions' when generating them."
 
     const prompt = `
-      <task>
-      Generate a detailed conventional commit message for the following Git diff:
+<task>
+Generate a detailed conventional commit message for the following Git diff:
 
-      ${diff}
-      </task>
-      <instructions>
-      - Use ONLY ${config.allowedTypes.map((val) => `'${val}'`).join(" | ")} as appropriate for the type of change.
-      - When assessing the commit type, consider the real impact of the change on the codebase and reserve 'feat' for significant changes or true feature additions.
-      - Always include a scope.
-      - Never use '!' or 'BREAKING CHANGE' in the commit message.
-      - Avoid excessive adjectives like 'enhance', 'comprehensive' etc
-      - Output will use markdown formatting for lists etc.
-      - Output will ONLY contain the commit message.
-      - Do not explain the output.
-      </instructions>
-      ${config.customInstructions ? `<customInstructions>\n${config.customInstructions}\n</customInstructions>` : ""}
-      `.trim()
+${diff}
+</task>
+<instructions>
+- Use ONLY ${config.allowedTypes.map((val) => `'${val}'`).join(" | ")} as appropriate for the type of change.
+- When assessing the commit type, consider actual impact of the commit. Refer to the "type-table" below for further guidance on the default commit types.
+- Always include a scope.
+- Never use '!' or 'BREAKING CHANGE' in the commit message.
+- Avoid excessive adjectives like 'enhance', 'comprehensive' etc
+- Output will use markdown formatting for lists etc.
+- Output will ONLY contain the commit message.
+- Do not explain the output.
+- "customInstructions" override these instructions if they are provided and conflict.
+
+<type-table>
+\`\`\`markdown
+| Commit Type | Typical Use Case                   | When to Use                                                                                                                                                             |
+| ----------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| chore       | Routine maintenance or updates     | Use when updating configs or non-code changes. (eg updating dependencies, modifying configs, updating types, etc.)                                                      |
+| ci          | Continuous integration adjustments | Use when updating CI/CD config files. (eg GitHub Actions, Workflows, Pipelines, etc.)                                                                                   |
+| docs        | Documentation-only changes         | Use only when updating or adding documentation, comments, or README files. (Do NOT use when adding or updating page content in web apps. eg Astro content collections.) |
+| feat        | New feature                        | Use only when adding new, user-facing feature or functionality or a fundamental change in an existing feature's functionality.                                          |
+| fix         | Bug fix                            | Use when fixing a bug or issue in code that may or may not affect functionality.                                                                                        |
+| perf        | Performance improvement            | Use when improving performance. (eg by optimising code.)                                                                                                                |
+| refactor    | Code restructuring                 | Use when restructuring code without changing functionality or fixing bugs. (This can include significant code changes like abstracting code to its own component.)      |
+| style       | Code formatting or styling         | Use when code changes do not affect functionality. (eg linting, formatting adjustments, colour, margin, padding, etc.)                                                  |
+| test        | Adding or updating tests           | Use when adding, updating, or removing tests.                                                                                                                           |
+\`\`\`
+</type-table>
+</instructions>
+${config.customInstructions ? `<customInstructions>\n${config.customInstructions}\n</customInstructions>` : ""}
+`.trim()
 
     let message: Anthropic.Message | undefined = undefined
     try {
