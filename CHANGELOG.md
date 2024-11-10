@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.2...diff-commit-v0.3.3) (2024-11-10)
+
+
+### Features, Additions & Updates
+
+* **config:** update commit message generation instructions ([1a5270d](https://github.com/tsdevau/diff-commit/commit/1a5270d7d6a73170610d0f7de733dc8e7fd430e1))
+
 ## [0.3.2](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.1...diff-commit-v0.3.2) (2024-11-08)
 
 
