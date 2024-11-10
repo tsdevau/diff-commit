@@ -24,7 +24,7 @@ ${diff}
 - When assessing the commit type, consider actual impact of the commit. Refer to the "type-table" below for further guidance on the default commit types.
 - Always include a scope.
 - Never use '!' or 'BREAKING CHANGE' in the commit message.
-- Avoid excessive adjectives like 'enhance', 'comprehensive' etc
+- Avoid unnecessary and excessive adjectives use. (eg 'enhance', 'comprehensive', etc.)
 - Output will use markdown formatting for lists etc.
 - Output will ONLY contain the commit message.
 - Do not explain the output.
