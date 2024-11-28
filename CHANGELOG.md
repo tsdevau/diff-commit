@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.5](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.4...diff-commit-v0.3.5) (2024-11-28)
+
+
+### Documentation
+
+* **docs:** fix table formatting in commit type options ([4440079](https://github.com/tsdevau/diff-commit/commit/44400790fa03608866c0ad941a7b8e9d79cfc15a))
+
+
+### DX Continuous Integrations
+
+* **publish:** add Open VSX Registry publishing to workflow ([eedb86d](https://github.com/tsdevau/diff-commit/commit/eedb86dc778fc5de45cee2cd95f872e6f1636499))
+
 ## [0.3.4](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.3...diff-commit-v0.3.4) (2024-11-10)
 
 
