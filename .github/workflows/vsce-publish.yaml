@@ -28,7 +28,15 @@ jobs:
       - name: Install vsce
         run: npm install -g @vscode/vsce
 
-      - name: Publish Extension
+      - name: Publish Extension to VSCode Marketplace
         run: vsce publish -p ${VSCE_PAT}
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Install ovsx
+        run: npm install -g ovsx
+
+      - name: Publish to Open VSX Registry
+        run: ovsx publish -p ${OVSX_PAT}
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
