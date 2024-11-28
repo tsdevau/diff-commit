@@ -1,7 +1,7 @@
 {
   "name": "diff-commit",
   "displayName": "Diff Commit",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Generate detailed Git commit messages following the conventional commit specification using Anthropic's AI models like Claude 3.5 Sonnet.",
   "categories": [
     "AI",
