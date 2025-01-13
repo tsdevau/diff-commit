@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.6](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.5...diff-commit-v0.3.6) (2025-01-13)
+
+
+### DX Maintenance & Configuration
+
+* **deps:** update dependencies and adjust vscode version requirement ([71bbe82](https://github.com/tsdevau/diff-commit/commit/71bbe8229b136650f2881da0d07b30962d1b955d))
+
 ## [0.3.5](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.4...diff-commit-v0.3.5) (2024-11-28)
 
 
