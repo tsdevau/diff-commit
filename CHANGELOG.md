@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.7](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.6...diff-commit-v0.3.7) (2025-01-13)
+
+
+### DX Maintenance & Configuration
+
+* **deps:** downgrade @types/vscode to v1.93.0 ([abe5687](https://github.com/tsdevau/diff-commit/commit/abe5687650487d1d21112ce4ba67d4bf1c18de48))
+
 ## [0.3.6](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.5...diff-commit-v0.3.6) (2025-01-13)
 
 
