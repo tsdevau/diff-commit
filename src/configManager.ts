@@ -21,7 +21,7 @@ export class ConfigManager {
     "test",
   ]
   private static readonly defaultMaxTokens = 1024
-  private static readonly defaultModel = "claude-3-5-haiku-latest"
+  private static readonly defaultModel = "claude-3-7-sonnet-latest"
   private static readonly defaultTemperature = 0.3
 
   getConfig(): CommitConfig {
