@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.8](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.7...diff-commit-v0.3.8) (2025-03-29)
+
+
+### Documentation
+
+* **models:** update Claude model options and add server overload error handling ([3a8e9c6](https://github.com/tsdevau/diff-commit/commit/3a8e9c60660b01bfb05befd3e2a012c5c2c22b0d))
+
+
+### DX Maintenance & Configuration
+
+* **config:** update default model to claude-3-7-sonnet-latest ([0f3b115](https://github.com/tsdevau/diff-commit/commit/0f3b1154c594844052ce6813138176f898e61280))
+* **deps:** update dependencies and optimise model settings ([c4d4c78](https://github.com/tsdevau/diff-commit/commit/c4d4c78e516ea2f913fe7f0db4c3cc3502cc5b81))
+
 ## [0.3.7](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.6...diff-commit-v0.3.7) (2025-01-13)
 
 
