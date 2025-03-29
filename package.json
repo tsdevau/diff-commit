@@ -62,8 +62,9 @@
       "properties": {
         "diffCommit.model": {
           "type": "string",
-          "default": "claude-3-5-haiku-latest",
+          "default": "claude-3-7-sonnet-latest",
           "enum": [
+            "claude-3-7-sonnet-latest",
             "claude-3-5-sonnet-latest",
             "claude-3-5-haiku-latest",
             "claude-3-opus-latest",
@@ -81,10 +82,10 @@
         },
         "diffCommit.temperature": {
           "type": "number",
-          "default": 0.4,
+          "default": 0.3,
           "minimum": 0,
           "maximum": 1,
-          "description": "Controls randomness in the response. Lower values (like 0.4) produce more focused and consistent commit messages, while higher values introduce more variety."
+          "description": "Controls randomness in the response. Lower values (like 0.3) produce more focused and consistent commit messages, while higher values introduce more variety."
         },
         "diffCommit.customInstructions": {
           "type": "string",
@@ -140,24 +141,24 @@
     }
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.33.1"
+    "@anthropic-ai/sdk": "^0.39.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.10.5",
+    "@types/node": "^22.13.14",
     "@types/vscode": "1.93.0",
-    "@typescript-eslint/eslint-plugin": "^8.19.1",
-    "@typescript-eslint/parser": "^8.19.1",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
     "@vscode/test-electron": "^2.4.1",
-    "esbuild": "^0.24.2",
-    "eslint": "^9.18.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-tailwindcss": "^3.17.5",
+    "esbuild": "^0.25.1",
+    "eslint": "^9.23.0",
+    "eslint-plugin-prettier": "^5.2.5",
+    "eslint-plugin-tailwindcss": "^3.18.0",
     "jest": "^29.7.0",
-    "prettier-plugin-packagejson": "^2.5.6",
-    "prettier-plugin-tailwindcss": "^0.6.9",
-    "ts-jest": "^29.2.5",
-    "typescript": "^5.7.3"
+    "prettier-plugin-packagejson": "^2.5.10",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "ts-jest": "^29.3.0",
+    "typescript": "^5.8.2"
   },
   "engines": {
     "vscode": "^1.93.1"
