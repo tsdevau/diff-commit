@@ -129,7 +129,7 @@ describe("Configuration Edge Cases", () => {
 
       expect(mockAnthropicCreate).toHaveBeenCalledWith(
         expect.objectContaining({
-          model: "claude-3-7-sonnet-latest",
+          model: "claude-sonnet-4-0",
         }),
       )
     })
