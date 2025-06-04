@@ -33,7 +33,7 @@ The generated commit messages are compatible with [googleapis/release-please](ht
 
 ## Features
 
-- Generate commit messages based on the diff of staged changes using Anthropic's AI models like Claude 3.5 Sonnet
+- Generate commit messages based on the diff of staged changes using Anthropic's AI models like Claude 4 Sonnet
 - Preview and edit generated commit messages before applying the commit
 - Uses markdown formatting for commit messages
 - Implements conventional commit format with type, scope, subject, and body
@@ -138,14 +138,14 @@ Add additional custom instructions to the commit generation prompt. Useful for p
 
 The Anthropic AI model to use for generating commit messages.
 
-| **Type** | **Options**                | **Default Value**          |
-| :------- | :------------------------- | :------------------------- |
-| enum     | "claude-3-7-sonnet-latest" | "claude-3-7-sonnet-latest" |
-|          | "claude-3-5-sonnet-latest" |                            |
-|          | "claude-3-5-haiku-latest"  |                            |
-|          | "claude-3-opus-latest"     |                            |
-|          | "claude-3-sonnet-20240229" |                            |
-|          | "claude-3-haiku-20240307"  |                            |
+| **Type** | **Options**                | **Default Value**   |
+| :------- | :------------------------- | :------------------ |
+| enum     | "claude-sonnet-4-0"        | "claude-sonnet-4-0" |
+|          | "claude-3-7-sonnet-latest" |                     |
+|          | "claude-3-5-sonnet-latest" |                     |
+|          | "claude-3-5-haiku-latest"  |                     |
+|          | "claude-opus-4-0"          |                     |
+|          | "claude-3-opus-latest"     |                     |
 
 ### `diffCommit.maxTokens`
 
