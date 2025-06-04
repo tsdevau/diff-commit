@@ -2,7 +2,7 @@
   "name": "diff-commit",
   "displayName": "Diff Commit",
   "version": "0.3.8",
-  "description": "Generate detailed Git commit messages following the conventional commit specification using Anthropic's AI models like Claude 3.5 Sonnet.",
+  "description": "Generate detailed Git commit messages following the conventional commit specification using Anthropic's AI models like Claude 4 Sonnet.",
   "categories": [
     "AI",
     "SCM Providers"
@@ -13,7 +13,7 @@
     "Commit Message",
     "Conventional Commit",
     "Anthropic",
-    "Claude 3.5",
+    "Claude Sonnet",
     "Sonnet",
     "Diff Commit",
     "tpsTech",
@@ -62,14 +62,14 @@
       "properties": {
         "diffCommit.model": {
           "type": "string",
-          "default": "claude-3-7-sonnet-latest",
+          "default": "claude-sonnet-4-0",
           "enum": [
+            "claude-sonnet-4-0",
             "claude-3-7-sonnet-latest",
             "claude-3-5-sonnet-latest",
             "claude-3-5-haiku-latest",
-            "claude-3-opus-latest",
-            "claude-3-sonnet-20240229",
-            "claude-3-haiku-20240307"
+            "claude-opus-4-0",
+            "claude-3-opus-latest"
           ],
           "description": "The Anthropic AI model to use for generating commit messages."
         },
@@ -78,7 +78,7 @@
           "default": 1024,
           "minimum": 1,
           "maximum": 8192,
-          "description": "Maximum number of tokens to generate in the response. Higher values allow for longer commit messages but use more API tokens."
+          "description": "Maximum number of tokens to generate in the response. Higher values allow for longer commit messages but can use more API tokens."
         },
         "diffCommit.temperature": {
           "type": "number",
