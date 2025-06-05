@@ -36,7 +36,7 @@ describe("Command Registration and Lifecycle", () => {
         "diffCommit.updateAPIKey",
         "diffCommit.getAPIKey",
         "diffCommit.deleteAPIKey",
-        "diffCommit.selectOllamaModel",
+        "diffCommit.configureOllamaModel",
         "diffCommit.changeOllamaModel",
         "diffCommit.generateCommitMessage",
         "diffCommit.previewCommitMessage",
