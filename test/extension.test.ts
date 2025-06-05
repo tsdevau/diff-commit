@@ -76,6 +76,7 @@ describe("Extension Core Functionality", () => {
     } as unknown as jest.Mocked<ConfigManager>
 
     mockOllamaManager = {
+      configureOllamaModel: jest.fn(),
       changeOllamaModel: jest.fn(),
     } as unknown as jest.Mocked<OllamaManager>
 
@@ -110,7 +111,7 @@ describe("Extension Core Functionality", () => {
         "diffCommit.updateAPIKey",
         "diffCommit.getAPIKey",
         "diffCommit.deleteAPIKey",
-        "diffCommit.selectOllamaModel",
+        "diffCommit.configureOllamaModel",
         "diffCommit.changeOllamaModel",
         "diffCommit.generateCommitMessage",
         "diffCommit.previewCommitMessage",
@@ -422,13 +423,14 @@ describe("Extension Core Functionality", () => {
     })
 
     it("should delegate Ollama model commands correctly", () => {
-      const selectModelCommand = registeredCommands.get("diffCommit.selectOllamaModel")!
+      const configureModelCommand = registeredCommands.get("diffCommit.configureOllamaModel")!
       const changeModelCommand = registeredCommands.get("diffCommit.changeOllamaModel")!
 
-      selectModelCommand()
+      configureModelCommand()
       changeModelCommand()
 
-      expect(mockOllamaManager.changeOllamaModel).toHaveBeenCalledTimes(2)
+      expect(mockOllamaManager.configureOllamaModel).toHaveBeenCalledTimes(1)
+      expect(mockOllamaManager.changeOllamaModel).toHaveBeenCalledTimes(1)
     })
   })
 
