@@ -112,7 +112,7 @@ describe("OllamaManager", () => {
       expect(mockConfigUpdate).toHaveBeenCalledWith("provider", "ollama", true)
       expect(mockConfigUpdate).toHaveBeenCalledWith("ollamaHostname", "http://localhost:11434", true)
       expect(mockConfigUpdate).toHaveBeenCalledWith("ollamaModel", "llama3.2", true)
-      expect(mockSetStatusBarMessage).toHaveBeenCalledWith("✓ Ollama model 'llama3.2' selected successfully", 4000)
+      expect(mockSetStatusBarMessage).toHaveBeenCalledWith("✓ Ollama model updated to 'llama3.2' successfully", 4000)
     })
 
     it("should return false when user cancels hostname input", async () => {
@@ -243,7 +243,7 @@ describe("OllamaManager", () => {
       expect(mockConfigUpdate).not.toHaveBeenCalledWith("provider", "ollama", true)
       expect(mockConfigUpdate).not.toHaveBeenCalledWith("ollamaHostname", expect.anything(), true)
       expect(mockConfigUpdate).toHaveBeenCalledWith("ollamaModel", "codellama", true)
-      expect(mockSetStatusBarMessage).toHaveBeenCalledWith("✓ Ollama model 'codellama' changed to successfully", 4000)
+      expect(mockSetStatusBarMessage).toHaveBeenCalledWith("✓ Ollama model updated to 'codellama' successfully", 4000)
     })
 
     it("should handle errors during model changing", async () => {
