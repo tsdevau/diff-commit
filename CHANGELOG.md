@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.9...diff-commit-v0.4.0) (2025-06-05)
+
+
+### Features, Additions & Updates
+
+* **models:** add support for local Ollama models ([#41](https://github.com/tsdevau/diff-commit/issues/41)) ([8d0e942](https://github.com/tsdevau/diff-commit/commit/8d0e9425c13745ab8b6820d329d91ac57496acd4))
+
+
+### Work in Progress
+
+* (rp) revert PR for "Add support for local Ollama models ([#39](https://github.com/tsdevau/diff-commit/issues/39))" to fix format for RP ([7528a09](https://github.com/tsdevau/diff-commit/commit/7528a097f760c6371cab645128dff093e67da386))
+
 ## [0.3.9](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.8...diff-commit-v0.3.9) (2025-06-04)
 
 
