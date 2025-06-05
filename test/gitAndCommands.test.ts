@@ -29,13 +29,15 @@ describe("Command Registration and Lifecycle", () => {
   })
 
   describe("Command Registration", () => {
-    test("should register all commands in correct order", () => {
+    it("should register all commands in correct order", () => {
       activate(mockContext)
 
       const expectedCommands = [
         "diffCommit.updateAPIKey",
         "diffCommit.getAPIKey",
         "diffCommit.deleteAPIKey",
+        "diffCommit.configureOllamaModel",
+        "diffCommit.changeOllamaModel",
         "diffCommit.generateCommitMessage",
         "diffCommit.previewCommitMessage",
       ]
@@ -46,11 +48,11 @@ describe("Command Registration and Lifecycle", () => {
       })
     })
 
-    test("should add all commands to subscriptions", () => {
+    it("should add all commands to subscriptions", () => {
       activate(mockContext)
 
-      // 7 subscriptions: 5 commands + 2 workspace event handlers
-      expect(mockContext.subscriptions).toHaveLength(7)
+      // 9 subscriptions: 7 commands + 2 workspace event handlers
+      expect(mockContext.subscriptions).toHaveLength(9)
       mockContext.subscriptions.forEach((subscription: any) => {
         expect(subscription).toHaveProperty("dispose")
         expect(typeof subscription.dispose).toBe("function")
@@ -59,7 +61,7 @@ describe("Command Registration and Lifecycle", () => {
   })
 
   describe("Command Lifecycle", () => {
-    test("should properly dispose commands on deactivation", () => {
+    it("should properly dispose commands on deactivation", () => {
       activate(mockContext)
       const disposeMocks = mockContext.subscriptions.map((sub: any) => sub.dispose as jest.Mock)
 
@@ -71,7 +73,7 @@ describe("Command Registration and Lifecycle", () => {
       })
     })
 
-    test("should maintain command registration if one fails", () => {
+    it("should maintain command registration if one fails", () => {
       // Mock console.error
       const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {})
 
@@ -90,8 +92,8 @@ describe("Command Registration and Lifecycle", () => {
       activate(mockContext)
 
       // Should still register remaining commands
-      expect(registeredCommands.size).toBe(4)
-      expect(mockContext.subscriptions.length).toBe(7) // All commands get registered
+      expect(registeredCommands.size).toBe(6)
+      expect(mockContext.subscriptions.length).toBe(9) // All commands get registered
       expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error))
 
       consoleErrorSpy.mockRestore()
@@ -99,7 +101,7 @@ describe("Command Registration and Lifecycle", () => {
   })
 
   describe("Subscription Management", () => {
-    test("should not add duplicate commands to subscriptions", () => {
+    it("should not add duplicate commands to subscriptions", () => {
       // First activation
       activate(mockContext)
       const firstSubscriptionsLength = mockContext.subscriptions.length
@@ -112,10 +114,10 @@ describe("Command Registration and Lifecycle", () => {
 
       // Should have same number of registrations as first activation
       expect(mockContext.subscriptions.length).toBe(firstSubscriptionsLength)
-      expect(registeredCommands.size).toBe(5) // Only command registrations
+      expect(registeredCommands.size).toBe(7) // Only command registrations
     })
 
-    test("should handle disposal of invalid subscriptions", () => {
+    it("should handle disposal of invalid subscriptions", () => {
       activate(mockContext)
 
       // Add an invalid subscription
@@ -131,9 +133,9 @@ describe("Command Registration and Lifecycle", () => {
       }).not.toThrow()
     })
 
-    test("should handle empty subscriptions array", () => {
+    it("should handle empty subscriptions array", () => {
       expect(() => activate(mockContext)).not.toThrow()
-      expect(mockContext.subscriptions.length).toBe(7) // 5 commands + 2 workspace event handlers
+      expect(mockContext.subscriptions.length).toBe(9) // 7 commands + 2 workspace event handlers
     })
   })
 })
