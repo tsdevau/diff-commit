@@ -3,7 +3,6 @@ import { APIKeyManager } from "./apiKeyManager"
 import { CommitMessageGenerator } from "./commitMessageGenerator"
 import { ConfigManager } from "./configManager"
 import { GitManager } from "./gitManager"
-import { OllamaCommitMessageGenerator } from "./ollamaCommitMessageGenerator"
 import { OllamaManager } from "./ollamaManager"
 
 export function activate(context: ExtensionContext) {
@@ -12,7 +11,7 @@ export function activate(context: ExtensionContext) {
   const apiKeyManager = new APIKeyManager(context)
   const gitManager = new GitManager()
   const configManager = new ConfigManager()
-  const ollamaManager = new OllamaManager(context)
+  const ollamaManager = new OllamaManager()
 
   async function generateCommitMessage(): Promise<string | undefined> {
     const workspaceRoot = workspace.workspaceFolders?.[0]?.uri?.fsPath
@@ -36,7 +35,7 @@ export function activate(context: ExtensionContext) {
         }
 
         const config = configManager.getConfig()
-        let generator: CommitMessageGenerator | OllamaCommitMessageGenerator
+        let generator: CommitMessageGenerator
         progress.report({ message: "Validating configuration..." })
         if (config.provider === "ollama") {
           // Validate Ollama configuration
@@ -45,7 +44,7 @@ export function activate(context: ExtensionContext) {
             return undefined
           }
 
-          generator = new OllamaCommitMessageGenerator(config.ollamaHostname, config.ollamaModel)
+          generator = new CommitMessageGenerator(config.ollamaHostname, config.ollamaModel)
         } else {
           // Anthropic provider
           const apiKey = (await apiKeyManager.getAPIKey()) ?? (await apiKeyManager.setAPIKey())
@@ -67,7 +66,7 @@ export function activate(context: ExtensionContext) {
   const cmdGetAPIKey = commands.registerCommand("diffCommit.getAPIKey", () => apiKeyManager.getAPIKey())
   const cmdDeleteAPIKey = commands.registerCommand("diffCommit.deleteAPIKey", () => apiKeyManager.deleteAPIKey())
   const cmdSelectOllamaModel = commands.registerCommand("diffCommit.selectOllamaModel", () =>
-    ollamaManager.selectOllamaModel(),
+    ollamaManager.changeOllamaModel(),
   )
   const cmdChangeOllamaModel = commands.registerCommand("diffCommit.changeOllamaModel", () =>
     ollamaManager.changeOllamaModel(),
