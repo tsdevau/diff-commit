@@ -1,44 +1,33 @@
-import { type ExtensionContext, window, workspace } from "vscode"
-
-interface OllamaModel {
-  name: string
-  modified_at: string
-  size: number
-}
-
-interface OllamaTagsResponse {
-  models: OllamaModel[]
-}
+import console from "console"
+import { Ollama } from "ollama"
+import { window, workspace } from "vscode"
 
 export class OllamaManager {
-  constructor(private context: ExtensionContext) {}
+  constructor() {}
 
-  async getAvailableModels(hostname: string): Promise<string[]> {
-    try {
-      const response = await fetch(`${hostname}/api/tags`)
+  private async ollamaModelConfig(includeHostnameSelection: boolean = true): Promise<boolean> {
+    const config = workspace.getConfiguration("diffCommit")
+    let hostname = config.get<string>("ollamaHostname") || "http://localhost:11434"
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch models: ${response.status} ${response.statusText}`)
+    // Only prompt for hostname if this is initial setup or explicitly requested
+    if (includeHostnameSelection) {
+      const inputHostname = await window.showInputBox({
+        prompt: "Enter Ollama hostname",
+        value: hostname,
+        placeHolder: "http://localhost:11434",
+      })
+
+      if (!inputHostname) {
+        return false
       }
 
-      const data: OllamaTagsResponse = await response.json()
-      return data.models.map((model) => model.name)
-    } catch (error) {
-      console.error("Failed to fetch Ollama models:", error)
-      throw error
-    }
-  }
-
-  async selectOllamaModel(): Promise<boolean> {
-    // Get hostname from user or use default
-    const hostname = await window.showInputBox({
-      prompt: "Enter Ollama hostname",
-      value: "http://localhost:11434",
-      placeHolder: "http://localhost:11434",
-    })
-
-    if (!hostname) {
-      return false
+      try {
+        const newHost = new URL(inputHostname)
+        hostname = newHost.toString()
+      } catch (error) {
+        window.showErrorMessage("Invalid hostname URL. Please enter a valid URL (eg http://localhost:11434).")
+        return this.ollamaModelConfig(includeHostnameSelection)
+      }
     }
 
     try {
@@ -51,9 +40,16 @@ export class OllamaManager {
       }
 
       // Let user select a model
+      const currentModel = config.get<string>("ollamaModel")
+      const placeHolder = includeHostnameSelection
+        ? "Select an Ollama model"
+        : `Select an Ollama model (current: ${currentModel || "none"})`
+
+      const title = includeHostnameSelection ? "Choose Ollama Model" : "Change Ollama Model"
+
       const selectedModel = await window.showQuickPick(models, {
-        placeHolder: "Select an Ollama model",
-        title: "Choose Ollama Model",
+        placeHolder,
+        title,
       })
 
       if (!selectedModel) {
@@ -61,19 +57,31 @@ export class OllamaManager {
       }
 
       // Save configuration
-      const config = workspace.getConfiguration("diffCommit")
-      await config.update("provider", "ollama", true)
-      await config.update("ollamaHostname", hostname, true)
+      if (includeHostnameSelection) {
+        await config.update("provider", "ollama", true)
+        await config.update("ollamaHostname", hostname, true)
+      }
       await config.update("ollamaModel", selectedModel, true)
 
-      window.showInformationMessage(`Ollama model '${selectedModel}' selected successfully`)
+      const action = includeHostnameSelection ? "selected" : "changed to"
+
+      window.setStatusBarMessage(`✓ Ollama model '${selectedModel}' ${action} successfully`, 4000)
+
       return true
     } catch (error) {
-      console.error("Error selecting Ollama model:", error)
-      if (error instanceof TypeError && error.message.includes("fetch")) {
-        window.showErrorMessage(
-          `Unable to connect to Ollama server at ${hostname}. Please ensure that the Ollama server is running and accessible.`,
-        )
+      const operation = includeHostnameSelection ? "selecting" : "changing"
+      console.error(`Error ${operation} Ollama model:`, error)
+
+      if (error instanceof Error) {
+        if (error.message.includes("ECONNREFUSED") || error.message.includes("fetch")) {
+          window.showErrorMessage(
+            `Unable to connect to Ollama server at ${hostname}. Please ensure that the Ollama server is running and accessible.`,
+          )
+        } else if (error.message.includes("404")) {
+          window.showErrorMessage(`Ollama server not found at ${hostname}. Please check the hostname and try again.`)
+        } else {
+          window.showErrorMessage(`Failed to connect to Ollama: ${error.message}`)
+        }
       } else {
         window.showErrorMessage(
           `Failed to connect to Ollama: ${error instanceof Error ? error.message : String(error)}`,
@@ -83,46 +91,30 @@ export class OllamaManager {
     }
   }
 
-  async changeOllamaModel(): Promise<boolean> {
-    const config = workspace.getConfiguration("diffCommit")
-    const currentHostname = config.get<string>("ollamaHostname") || "http://localhost:11434"
-
+  async getAvailableModels(hostname: string): Promise<string[]> {
     try {
-      // Get available models from current hostname
-      const models = await this.getAvailableModels(currentHostname)
-
-      if (models.length === 0) {
-        window.showWarningMessage("No models found on the Ollama server. Please pull a model first.")
-        return false
-      }
-
-      const currentModel = config.get<string>("ollamaModel")
-      const selectedModel = await window.showQuickPick(models, {
-        placeHolder: `Select an Ollama model (current: ${currentModel || "none"})`,
-        title: "Change Ollama Model",
+      const ollama = new Ollama({
+        host: hostname,
       })
 
-      if (!selectedModel) {
-        return false
-      }
-
-      // Update only the model selection
-      await config.update("ollamaModel", selectedModel, true)
-
-      window.showInformationMessage(`Ollama model changed to '${selectedModel}'`)
-      return true
+      const response = await ollama.list()
+      return response.models.map((model) => model.name)
     } catch (error) {
-      console.error("Error changing Ollama model:", error)
-      if (error instanceof TypeError && error.message.includes("fetch")) {
-        window.showErrorMessage(
-          `Unable to connect to Ollama server at ${currentHostname}. Please ensure Ollama is running and accessible.`,
-        )
-      } else {
-        window.showErrorMessage(
-          `Failed to connect to Ollama: ${error instanceof Error ? error.message : String(error)}`,
-        )
-      }
-      return false
+      console.error("Failed to fetch Ollama models:", error)
+      window.showErrorMessage(
+        `Failed to fetch Ollama models: ${error instanceof Error ? error.message : String(error)}`,
+      )
+      throw error
     }
+  }
+
+  // Convenience method for initial setup
+  async configureOllamaModel(): Promise<boolean> {
+    return this.ollamaModelConfig(true)
+  }
+
+  // Convenience method for changing existing model
+  async changeOllamaModel(): Promise<boolean> {
+    return this.ollamaModelConfig(false)
   }
 }
