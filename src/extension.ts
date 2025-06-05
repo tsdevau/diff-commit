@@ -3,6 +3,8 @@ import { APIKeyManager } from "./apiKeyManager"
 import { CommitMessageGenerator } from "./commitMessageGenerator"
 import { ConfigManager } from "./configManager"
 import { GitManager } from "./gitManager"
+import { OllamaCommitMessageGenerator } from "./ollamaCommitMessageGenerator"
+import { OllamaManager } from "./ollamaManager"
 
 export function activate(context: ExtensionContext) {
   let previewDocument: TextDocument | undefined
@@ -10,6 +12,7 @@ export function activate(context: ExtensionContext) {
   const apiKeyManager = new APIKeyManager(context)
   const gitManager = new GitManager()
   const configManager = new ConfigManager()
+  const ollamaManager = new OllamaManager(context)
 
   async function generateCommitMessage(): Promise<string | undefined> {
     const workspaceRoot = workspace.workspaceFolders?.[0]?.uri?.fsPath
@@ -32,16 +35,28 @@ export function activate(context: ExtensionContext) {
           return undefined
         }
 
-        progress.report({ message: "Validating API key..." })
-        const apiKey = (await apiKeyManager.getAPIKey()) ?? (await apiKeyManager.setAPIKey())
-        if (!apiKey) {
-          window.showErrorMessage("API Key is required")
-          return undefined
-        }
-
-        progress.report({ message: "Generating commit message..." })
         const config = configManager.getConfig()
-        const generator = new CommitMessageGenerator(apiKey)
+        let generator: CommitMessageGenerator | OllamaCommitMessageGenerator
+        progress.report({ message: "Validating configuration..." })
+        if (config.provider === "ollama") {
+          // Validate Ollama configuration
+          if (!config.ollamaModel) {
+            window.showErrorMessage("No Ollama model selected. Please configure an Ollama model first.")
+            return undefined
+          }
+
+          generator = new OllamaCommitMessageGenerator(config.ollamaHostname, config.ollamaModel)
+        } else {
+          // Anthropic provider
+          const apiKey = (await apiKeyManager.getAPIKey()) ?? (await apiKeyManager.setAPIKey())
+          if (!apiKey) {
+            window.showErrorMessage("API Key is required")
+            return undefined
+          }
+
+          generator = new CommitMessageGenerator(apiKey)
+        }
+        progress.report({ message: "Generating commit message..." })
         return await generator.generateMessage(diff, config)
       },
     )
@@ -51,6 +66,12 @@ export function activate(context: ExtensionContext) {
   const cmdUpdateAPIKey = commands.registerCommand("diffCommit.updateAPIKey", () => apiKeyManager.setAPIKey())
   const cmdGetAPIKey = commands.registerCommand("diffCommit.getAPIKey", () => apiKeyManager.getAPIKey())
   const cmdDeleteAPIKey = commands.registerCommand("diffCommit.deleteAPIKey", () => apiKeyManager.deleteAPIKey())
+  const cmdSelectOllamaModel = commands.registerCommand("diffCommit.selectOllamaModel", () =>
+    ollamaManager.selectOllamaModel(),
+  )
+  const cmdChangeOllamaModel = commands.registerCommand("diffCommit.changeOllamaModel", () =>
+    ollamaManager.changeOllamaModel(),
+  )
 
   const cmdGenerateCommitMessage = commands.registerCommand("diffCommit.generateCommitMessage", async () => {
     try {
@@ -104,6 +125,8 @@ export function activate(context: ExtensionContext) {
     cmdUpdateAPIKey,
     cmdGetAPIKey,
     cmdDeleteAPIKey,
+    cmdSelectOllamaModel,
+    cmdChangeOllamaModel,
     onSave,
     onClose,
   )
