@@ -97,7 +97,7 @@
             "claude-opus-4-0",
             "claude-3-opus-latest"
           ],
-          "description": "The Anthropic AI model to use for generating commit messages.  This value is only used when provider is set as 'anthropic')."
+          "description": "The Anthropic AI model to use for generating commit messages.  This value is only used when provider is set as 'anthropic'."
         },
         "diffCommit.ollamaHostname": {
           "type": "string",
