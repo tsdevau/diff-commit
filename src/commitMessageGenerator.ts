@@ -88,10 +88,10 @@ export class CommitMessageGenerator {
       return undefined
     } finally {
       console.log("[DiffCommit] Stop Reason: ", message?.stop_reason)
-      console.log("[DiffCommit] Input Tokens: ", message?.usage.input_tokens)
-      console.log("[DiffCommit] Cache Creation Tokens: ", message?.usage.cache_creation_input_tokens)
-      console.log("[DiffCommit] Cache Read Tokens: ", message?.usage.cache_read_input_tokens)
-      console.log("[DiffCommit] Output Tokens: ", message?.usage.output_tokens)
+      console.log("[DiffCommit] Input Tokens: ", message?.usage?.input_tokens)
+      console.log("[DiffCommit] Cache Creation Tokens: ", message?.usage?.cache_creation_input_tokens)
+      console.log("[DiffCommit] Cache Read Tokens: ", message?.usage?.cache_read_input_tokens)
+      console.log("[DiffCommit] Output Tokens: ", message?.usage?.output_tokens)
     }
   }
 
