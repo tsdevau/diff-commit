@@ -134,15 +134,15 @@
             "type": "string"
           },
           "default": [
+            "chore",
+            "ci",
+            "docs",
             "feat",
             "fix",
-            "refactor",
-            "chore",
-            "docs",
-            "style",
-            "test",
             "perf",
-            "ci"
+            "refactor",
+            "style",
+            "test"
           ],
           "description": "List of allowed commit types. If provided, this replaces the default options. So you need to ensure all required commit types are included in the list."
         }
