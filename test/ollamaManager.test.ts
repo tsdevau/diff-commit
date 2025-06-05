@@ -110,7 +110,7 @@ describe("OllamaManager", () => {
 
       expect(result).toBe(true)
       expect(mockConfigUpdate).toHaveBeenCalledWith("provider", "ollama", true)
-      expect(mockConfigUpdate).toHaveBeenCalledWith("ollamaHostname", "http://localhost:11434/", true)
+      expect(mockConfigUpdate).toHaveBeenCalledWith("ollamaHostname", "http://localhost:11434", true)
       expect(mockConfigUpdate).toHaveBeenCalledWith("ollamaModel", "llama3.2", true)
       expect(mockSetStatusBarMessage).toHaveBeenCalledWith("✓ Ollama model 'llama3.2' selected successfully", 4000)
     })
@@ -173,7 +173,7 @@ describe("OllamaManager", () => {
 
         expect(result).toBe(false)
         expect(mockShowErrorMessage).toHaveBeenCalledWith(
-          "Unable to connect to Ollama server at http://localhost:11434/. Please ensure that the Ollama server is running and accessible.",
+          "Unable to connect to Ollama server at http://localhost:11434. Please ensure that the Ollama server is running and accessible.",
         )
       })
 
@@ -185,7 +185,7 @@ describe("OllamaManager", () => {
 
         expect(result).toBe(false)
         expect(mockShowErrorMessage).toHaveBeenCalledWith(
-          "Unable to connect to Ollama server at http://localhost:11434/. Please ensure that the Ollama server is running and accessible.",
+          "Unable to connect to Ollama server at http://localhost:11434. Please ensure that the Ollama server is running and accessible.",
         )
       })
 
@@ -197,7 +197,7 @@ describe("OllamaManager", () => {
 
         expect(result).toBe(false)
         expect(mockShowErrorMessage).toHaveBeenCalledWith(
-          "Ollama server not found at http://localhost:11434/. Please check the hostname and try again.",
+          "Ollama server not found at http://localhost:11434. Please check the hostname and try again.",
         )
       })
 
