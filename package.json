@@ -2,7 +2,7 @@
   "name": "diff-commit",
   "displayName": "Diff Commit",
   "version": "0.3.8",
-  "description": "Generate detailed Git commit messages following the conventional commit specification using Anthropic's AI models like Claude 4 Sonnet.",
+  "description": "Generate detailed Git commit messages following the conventional commit specification using AI models. Choose between Anthropic's cloud-based models like Claude 4 Sonnet or local Ollama models for offline usage.",
   "categories": [
     "AI",
     "SCM Providers"
@@ -15,6 +15,9 @@
     "Anthropic",
     "Claude Sonnet",
     "Sonnet",
+    "Ollama",
+    "Local AI",
+    "Offline AI",
     "Diff Commit",
     "tpsTech",
     "tsdevau"
@@ -57,7 +60,7 @@
         "icon": "$(trash)"
       },
       {
-        "command": "diffCommit.selectOllamaModel",
+        "command": "diffCommit.configureOllamaModel",
         "title": "DiffCommit: Configure Ollama Model",
         "icon": "$(server-environment)"
       },
@@ -174,7 +177,8 @@
     }
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0"
+    "@anthropic-ai/sdk": "^0.39.0",
+    "ollama": "^0.5.16"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
