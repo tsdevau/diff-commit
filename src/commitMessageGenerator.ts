@@ -17,27 +17,22 @@ export class CommitMessageGenerator {
   // Constructor overload for Ollama (hostname and model)
   constructor(hostname: string, ollamaModel: string)
   // Implementation
-  constructor() {
+  constructor(...args: [string] | [string, string]) {
     try {
-      if (
-        arguments.length === 1 &&
-        arguments[0] &&
-        typeof arguments[0] === "string" &&
-        arguments[0].startsWith("sk-")
-      ) {
+      if (args.length === 1 && args[0] && typeof args[0] === "string" && args[0].startsWith("sk-")) {
         // Anthropic constructor
-        this.apiKey = arguments[0]
+        this.apiKey = args[0]
       } else if (
-        arguments.length === 2 &&
-        arguments[0] &&
-        typeof arguments[0] === "string" &&
-        arguments[0].startsWith("http") &&
-        arguments[1] &&
-        typeof arguments[1] === "string"
+        args.length === 2 &&
+        args[0] &&
+        typeof args[0] === "string" &&
+        args[0].startsWith("http") &&
+        args[1] &&
+        typeof args[1] === "string"
       ) {
         // Ollama constructor
-        this.ollamaHost = arguments[0]
-        this.ollamaModel = arguments[1]
+        this.ollamaHost = args[0]
+        this.ollamaModel = args[1]
       } else {
         throw new Error(
           "Invalid constructor arguments. Configure either an API key for Anthropic or a hostname and model for Ollama.",
