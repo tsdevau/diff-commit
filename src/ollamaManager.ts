@@ -1,4 +1,3 @@
-import console from "console"
 import { Ollama } from "ollama"
 import { window, workspace } from "vscode"
 
@@ -23,7 +22,7 @@ export class OllamaManager {
 
       try {
         const newHost = new URL(inputHostname)
-        hostname = newHost.toString()
+        hostname = newHost.toString().replace(/\/+$/, "")
       } catch (error) {
         window.showErrorMessage("Invalid hostname URL. Please enter a valid URL (eg http://localhost:11434).")
         return this.ollamaModelConfig(includeHostnameSelection)
