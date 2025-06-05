@@ -1,9 +1,6 @@
 // Mock Anthropic API at the top level
 const mockAnthropicCreate = jest.fn()
 
-// Mock Ollama API at the top level
-const mockOllamaGenerate = jest.fn()
-
 // Create mock APIError class
 class MockAPIError extends Error {
   constructor(
@@ -27,25 +24,10 @@ function MockAnthropic() {
 }
 MockAnthropic.APIError = MockAPIError
 
-// Create mock Ollama constructor
-function MockOllama() {
-  return {
-    generate: mockOllamaGenerate,
-  }
-}
-
 jest.mock("@anthropic-ai/sdk", () => ({
   __esModule: true,
   default: MockAnthropic,
 }))
-
-jest.mock("ollama", () => ({
-  Ollama: MockOllama,
-}))
-
-import { APIKeyManager } from "../src/apiKeyManager"
-
-jest.mock("../src/apiKeyManager")
 
 import Anthropic from "@anthropic-ai/sdk"
 import * as vscode from "vscode"
@@ -151,12 +133,9 @@ describe("Error Handling", () => {
     ;(vscode.workspace as any).getConfiguration = () => ({
       get: (key: string) => {
         const defaults: { [key: string]: any } = {
-          model: "claude-sonnet-4-0",
+          model: "claude-3-5-sonnet-latest",
           maxTokens: 1024,
-          temperature: 0.2,
-          provider: "anthropic",
-          ollamaHostname: "http://localhost:11434",
-          ollamaModel: "",
+          temperature: 0.4,
         }
         return defaults[key]
       },
@@ -188,22 +167,19 @@ describe("Error Handling", () => {
       usage: { input_tokens: 100, output_tokens: 50 },
     }
     mockAnthropicCreate.mockResolvedValue(mockMessage)
-    ;(APIKeyManager.prototype.getAPIKey as jest.Mock).mockResolvedValue("sk-test-api-key")
 
     activate(mockContext)
     await mockCommands["diffCommit.generateCommitMessage"]()
 
     // Verify console.log was called with the expected arguments
     expect(console.log).toHaveBeenCalledWith("[DiffCommit] Stop Reason: ", mockMessage.stop_reason)
-    expect(console.log).toHaveBeenCalledWith("[DiffCommit] Input Tokens: ", mockMessage.usage.input_tokens)
-    expect(console.log).toHaveBeenCalledWith("[DiffCommit] Output Tokens: ", mockMessage.usage.output_tokens)
+    expect(console.log).toHaveBeenCalledWith("[DiffCommit] Usage: ", mockMessage.usage)
   })
 
   describe("Anthropic API Error Handling", () => {
     it("handles 400 Bad Request error", async () => {
       const apiError = new Anthropic.APIError(400, "Bad request", "api_error", {})
       mockAnthropicCreate.mockRejectedValue(apiError)
-      ;(APIKeyManager.prototype.getAPIKey as jest.Mock).mockResolvedValue("sk-test-api-key")
 
       activate(mockContext)
       await mockCommands["diffCommit.generateCommitMessage"]()
@@ -215,7 +191,6 @@ describe("Error Handling", () => {
     it("handles 401 Unauthorised error", async () => {
       const apiError = new Anthropic.APIError(401, "Invalid API key", "api_error", {})
       mockAnthropicCreate.mockRejectedValue(apiError)
-      ;(APIKeyManager.prototype.getAPIKey as jest.Mock).mockResolvedValue("sk-test-api-key")
 
       activate(mockContext)
       await mockCommands["diffCommit.generateCommitMessage"]()
@@ -229,7 +204,6 @@ describe("Error Handling", () => {
     it("handles 403 Forbidden error", async () => {
       const apiError = new Anthropic.APIError(403, "Permission denied", "api_error", {})
       mockAnthropicCreate.mockRejectedValue(apiError)
-      ;(APIKeyManager.prototype.getAPIKey as jest.Mock).mockResolvedValue("sk-test-api-key")
 
       activate(mockContext)
       await mockCommands["diffCommit.generateCommitMessage"]()
@@ -243,7 +217,6 @@ describe("Error Handling", () => {
     it("handles 429 Rate Limit error", async () => {
       const apiError = new Anthropic.APIError(429, "Too many requests", "api_error", {})
       mockAnthropicCreate.mockRejectedValue(apiError)
-      ;(APIKeyManager.prototype.getAPIKey as jest.Mock).mockResolvedValue("sk-test-api-key")
 
       activate(mockContext)
       await mockCommands["diffCommit.generateCommitMessage"]()
@@ -274,34 +247,6 @@ describe("Error Handling", () => {
 
       expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Failed to generate commit message:\n\nUnknown error")
       expect(console.error).toHaveBeenCalledWith("Anthropic API Error (418):\n\nUnknown error")
-    })
-
-    it("handles non-APIError exceptions", async () => {
-      const regularError = new Error("Network connection failed")
-      mockAnthropicCreate.mockRejectedValue(regularError)
-      ;(APIKeyManager.prototype.getAPIKey as jest.Mock).mockResolvedValue("sk-test-api-key")
-
-      activate(mockContext)
-      await mockCommands["diffCommit.generateCommitMessage"]()
-
-      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
-        "Unknown error generating commit message: Network connection failed",
-      )
-      expect(console.error).toHaveBeenCalledWith("Unknown error: Network connection failed")
-    })
-
-    it("handles non-Error objects", async () => {
-      const stringError = "Something went wrong"
-      mockAnthropicCreate.mockRejectedValue(stringError)
-      ;(APIKeyManager.prototype.getAPIKey as jest.Mock).mockResolvedValue("sk-test-api-key")
-
-      activate(mockContext)
-      await mockCommands["diffCommit.generateCommitMessage"]()
-
-      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
-        "Unknown error generating commit message: Something went wrong",
-      )
-      expect(console.error).toHaveBeenCalledWith("Unknown error: Something went wrong")
     })
   })
 
@@ -343,8 +288,7 @@ describe("Error Handling", () => {
     expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Failed to write to SCM:\n\nSCM error")
     // Verify finally block still logs
     expect(console.log).toHaveBeenCalledWith("[DiffCommit] Stop Reason: ", mockMessage.stop_reason)
-    expect(console.log).toHaveBeenCalledWith("[DiffCommit] Input Tokens: ", mockMessage.usage.input_tokens)
-    expect(console.log).toHaveBeenCalledWith("[DiffCommit] Output Tokens: ", mockMessage.usage.output_tokens)
+    expect(console.log).toHaveBeenCalledWith("[DiffCommit] Usage: ", mockMessage.usage)
   })
 
   it("logs error when opening commit message preview fails", async () => {
@@ -384,103 +328,6 @@ describe("Error Handling", () => {
     )
     // Verify finally block still logs
     expect(console.log).toHaveBeenCalledWith("[DiffCommit] Stop Reason: ", mockMessage.stop_reason)
-    expect(console.log).toHaveBeenCalledWith("[DiffCommit] Input Tokens: ", mockMessage.usage.input_tokens)
-    expect(console.log).toHaveBeenCalledWith("[DiffCommit] Output Tokens: ", mockMessage.usage.output_tokens)
-  })
-
-  describe("Ollama Error Handling", () => {
-    beforeEach(() => {
-      // Override the default configuration mock for Ollama tests
-      ;(vscode.workspace as any).getConfiguration = () => ({
-        get: (key: string) => {
-          const config: { [key: string]: any } = {
-            provider: "ollama",
-            ollamaHostname: "http://localhost:11434",
-            ollamaModel: "llama3.2",
-            model: "claude-sonnet-4-0",
-            maxTokens: 1000,
-            temperature: 0.3,
-            allowedTypes: ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"],
-          }
-          return config[key]
-        },
-      })
-    })
-
-    it("handles TypeError with fetch error (connection errors)", async () => {
-      const fetchError = new TypeError("fetch failed")
-      mockOllamaGenerate.mockRejectedValue(fetchError)
-
-      activate(mockContext)
-      await mockCommands["diffCommit.generateCommitMessage"]()
-
-      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
-        "Unable to connect to Ollama server at http://localhost:11434. Please ensure that the Ollama server is running and accessible.",
-      )
-      expect(console.error).toHaveBeenCalledWith("Ollama API Error:\n\nTypeError: fetch failed")
-    })
-
-    it("handles 404 model not found error", async () => {
-      const notFoundError = new Error("404 model not found")
-      mockOllamaGenerate.mockRejectedValue(notFoundError)
-
-      activate(mockContext)
-      await mockCommands["diffCommit.generateCommitMessage"]()
-
-      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
-        "Model 'llama3.2' not found. Please check if the model is available in Ollama.",
-      )
-      expect(console.error).toHaveBeenCalledWith("Ollama API Error:\n\nError: 404 model not found")
-    })
-
-    it("handles 500 server error", async () => {
-      const serverError = new Error("500 internal server error")
-      mockOllamaGenerate.mockRejectedValue(serverError)
-
-      activate(mockContext)
-      await mockCommands["diffCommit.generateCommitMessage"]()
-
-      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith("Ollama server error. Please try again later.")
-      expect(console.error).toHaveBeenCalledWith("Ollama API Error:\n\nError: 500 internal server error")
-    })
-
-    it("handles generic Error with custom message", async () => {
-      const genericError = new Error("Something went wrong with Ollama")
-      mockOllamaGenerate.mockRejectedValue(genericError)
-
-      activate(mockContext)
-      await mockCommands["diffCommit.generateCommitMessage"]()
-
-      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
-        "Failed to generate commit message with Ollama:\n\nSomething went wrong with Ollama",
-      )
-      expect(console.error).toHaveBeenCalledWith("Ollama API Error:\n\nError: Something went wrong with Ollama")
-    })
-
-    it("handles unknown error type (not Error instance)", async () => {
-      const unknownError = "Some string error"
-      mockOllamaGenerate.mockRejectedValue(unknownError)
-
-      activate(mockContext)
-      await mockCommands["diffCommit.generateCommitMessage"]()
-
-      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
-        "Unknown error generating commit message with Ollama: Some string error",
-      )
-      expect(console.error).toHaveBeenCalledWith("Ollama API Error:\n\nSome string error")
-    })
-
-    it("handles unknown error with object type", async () => {
-      const unknownError = { message: "Object error" }
-      mockOllamaGenerate.mockRejectedValue(unknownError)
-
-      activate(mockContext)
-      await mockCommands["diffCommit.generateCommitMessage"]()
-
-      expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
-        "Unknown error generating commit message with Ollama: [object Object]",
-      )
-      expect(console.error).toHaveBeenCalledWith("Ollama API Error:\n\n[object Object]")
-    })
+    expect(console.log).toHaveBeenCalledWith("[DiffCommit] Usage: ", mockMessage.usage)
   })
 })

@@ -2,7 +2,7 @@
   "name": "diff-commit",
   "displayName": "Diff Commit",
   "version": "0.3.9",
-  "description": "Generate detailed Git commit messages following the conventional commit specification using AI models. Choose between Anthropic's cloud-based models like Claude 4 Sonnet or local Ollama models for offline usage.",
+  "description": "Generate detailed Git commit messages following the conventional commit specification using Anthropic's AI models like Claude 4 Sonnet.",
   "categories": [
     "AI",
     "SCM Providers"
@@ -15,9 +15,6 @@
     "Anthropic",
     "Claude Sonnet",
     "Sonnet",
-    "Ollama",
-    "Local AI",
-    "Offline AI",
     "Diff Commit",
     "tpsTech",
     "tsdevau"
@@ -58,34 +55,11 @@
         "command": "diffCommit.deleteAPIKey",
         "title": "DiffCommit: Delete stored API Key",
         "icon": "$(trash)"
-      },
-      {
-        "command": "diffCommit.configureOllamaModel",
-        "title": "DiffCommit: Configure Ollama Model",
-        "icon": "$(server-environment)"
-      },
-      {
-        "command": "diffCommit.changeOllamaModel",
-        "title": "DiffCommit: Change Ollama Model",
-        "icon": "$(settings-gear)"
       }
     ],
     "configuration": {
       "title": "Diff Commit",
       "properties": {
-        "diffCommit.provider": {
-          "type": "string",
-          "default": "anthropic",
-          "enum": [
-            "anthropic",
-            "ollama"
-          ],
-          "enumDescriptions": [
-            "Use Anthropic's Claude models (requires API key)",
-            "Use local Ollama models (requires Ollama server to be running)"
-          ],
-          "description": "Choose the AI provider for generating commit messages."
-        },
         "diffCommit.model": {
           "type": "string",
           "default": "claude-sonnet-4-0",
@@ -97,17 +71,7 @@
             "claude-opus-4-0",
             "claude-3-opus-latest"
           ],
-          "description": "The Anthropic AI model to use for generating commit messages.  This value is only used when provider is set as 'anthropic'."
-        },
-        "diffCommit.ollamaHostname": {
-          "type": "string",
-          "default": "http://localhost:11434",
-          "description": "The URL of the local Ollama server (eg http://localhost:11434).  This value is only used when provider is set as 'ollama'."
-        },
-        "diffCommit.ollamaModel": {
-          "type": "string",
-          "default": "",
-          "description": "The Ollama model to use for generating commit messages.  Use the 'Configure Ollama Model' command to configure this.  This value is only used when provider is set as 'ollama'."
+          "description": "The Anthropic AI model to use for generating commit messages."
         },
         "diffCommit.maxTokens": {
           "type": "number",
@@ -134,15 +98,15 @@
             "type": "string"
           },
           "default": [
-            "chore",
-            "ci",
-            "docs",
             "feat",
             "fix",
-            "perf",
             "refactor",
+            "chore",
+            "docs",
             "style",
-            "test"
+            "test",
+            "perf",
+            "ci"
           ],
           "description": "List of allowed commit types. If provided, this replaces the default options. So you need to ensure all required commit types are included in the list."
         }
@@ -177,8 +141,7 @@
     }
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0",
-    "ollama": "^0.5.16"
+    "@anthropic-ai/sdk": "^0.39.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
