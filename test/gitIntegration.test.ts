@@ -48,13 +48,19 @@ jest.mock("vscode", () => {
         get: jest.fn((key: string) => {
           switch (key) {
             case "model":
-              return "claude-3-5-sonnet-20241022"
+              return "claude-sonnet-4-0"
             case "maxTokens":
               return 1024
             case "temperature":
-              return 0.4
+              return 0.2
             case "allowedTypes":
               return ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"]
+            case "provider":
+              return "anthropic"
+            case "ollamaHostname":
+              return "http://localhost:11434"
+            case "ollamaModel":
+              return ""
             default:
               return undefined
           }
@@ -209,9 +215,9 @@ describe("Git Integration", () => {
 
       expect(mockGitRepo.diff).toHaveBeenCalledWith(true)
       expect(mockAnthropicCreate).toHaveBeenCalledWith({
-        model: "claude-3-5-sonnet-20241022",
+        model: "claude-sonnet-4-0",
         max_tokens: 1024,
-        temperature: 0.4,
+        temperature: 0.2,
         system: expect.any(String),
         messages: expect.arrayContaining([
           expect.objectContaining({
@@ -231,9 +237,9 @@ describe("Git Integration", () => {
 
       expect(mockGitRepo.diff).toHaveBeenCalledWith(true)
       expect(mockAnthropicCreate).toHaveBeenCalledWith({
-        model: "claude-3-5-sonnet-20241022",
+        model: "claude-sonnet-4-0",
         max_tokens: 1024,
-        temperature: 0.4,
+        temperature: 0.2,
         system: expect.any(String),
         messages: expect.arrayContaining([
           expect.objectContaining({
