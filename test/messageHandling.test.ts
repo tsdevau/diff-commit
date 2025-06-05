@@ -81,6 +81,20 @@ describe("Message Handling", () => {
     ;(vscode.workspace.onDidSaveTextDocument as jest.Mock).mockReturnValue({ dispose: jest.fn() })
     ;(vscode.workspace.onDidCloseTextDocument as jest.Mock).mockReturnValue({ dispose: jest.fn() })
 
+    // Set up default configuration
+    configGetMock.mockImplementation((key: string) => {
+      const defaults: { [key: string]: any } = {
+        model: "claude-sonnet-4-0",
+        maxTokens: 1024,
+        temperature: 0.2,
+        allowedTypes: ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"],
+        provider: "anthropic",
+        ollamaHostname: "http://localhost:11434",
+        ollamaModel: "",
+      }
+      return defaults[key]
+    })
+
     // Mock workspace folders
     ;(vscode.workspace.workspaceFolders as any) = [{ uri: { fsPath: "/test/workspace" } }]
   })

@@ -41,6 +41,16 @@ describe("Progress API Integration", () => {
     // Mock the constructor
     ;(GitManager as jest.MockedClass<typeof GitManager>).mockImplementation(() => mockGitManager)
 
+    // Mock ConfigManager
+    ;(ConfigManager.prototype.getConfig as jest.Mock).mockReturnValue({
+      model: "claude-sonnet-4-0",
+      maxTokens: 1024,
+      temperature: 0.2,
+      provider: "anthropic",
+      ollamaHostname: "http://localhost:11434",
+      ollamaModel: "",
+    })
+
     // Mock workspace folders
     ;(workspace.workspaceFolders as any) = [
       {
@@ -88,7 +98,7 @@ describe("Progress API Integration", () => {
       // Verify progress messages in order
       expect(mockProgress.report.mock.calls).toEqual([
         [{ message: "Getting git diff..." }],
-        [{ message: "Validating API key..." }],
+        [{ message: "Validating configuration..." }],
         [{ message: "Generating commit message..." }],
       ])
     })
@@ -120,7 +130,7 @@ describe("Progress API Integration", () => {
       // Should show first two progress messages
       expect(mockProgress.report.mock.calls).toEqual([
         [{ message: "Getting git diff..." }],
-        [{ message: "Validating API key..." }],
+        [{ message: "Validating configuration..." }],
       ])
 
       // Should show error message
@@ -139,7 +149,7 @@ describe("Progress API Integration", () => {
       // Should show first two progress messages
       expect(mockProgress.report.mock.calls).toEqual([
         [{ message: "Getting git diff..." }],
-        [{ message: "Validating API key..." }],
+        [{ message: "Validating configuration..." }],
       ])
 
       // Should show error message
@@ -166,7 +176,7 @@ describe("Progress API Integration", () => {
       // Verify all progress messages shown
       expect(mockProgress.report.mock.calls).toEqual([
         [{ message: "Getting git diff..." }],
-        [{ message: "Validating API key..." }],
+        [{ message: "Validating configuration..." }],
         [{ message: "Generating commit message..." }],
       ])
 
