@@ -62,14 +62,11 @@ export class OllamaManager {
       }
       await config.update("ollamaModel", selectedModel, true)
 
-      const action = includeHostnameSelection ? "selected" : "changed to"
-
-      window.setStatusBarMessage(`✓ Ollama model '${selectedModel}' ${action} successfully`, 4000)
+      window.setStatusBarMessage(`✓ Ollama model updated to '${selectedModel}' successfully`, 4000)
 
       return true
     } catch (error) {
-      const operation = includeHostnameSelection ? "selecting" : "changing"
-      console.error(`Error ${operation} Ollama model:`, error)
+      console.error(`Error updating Ollama model:`, error)
 
       if (error instanceof Error) {
         if (error.message.includes("ECONNREFUSED") || error.message.includes("fetch")) {
