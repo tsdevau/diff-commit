@@ -65,8 +65,8 @@ export function activate(context: ExtensionContext) {
   const cmdUpdateAPIKey = commands.registerCommand("diffCommit.updateAPIKey", () => apiKeyManager.setAPIKey())
   const cmdGetAPIKey = commands.registerCommand("diffCommit.getAPIKey", () => apiKeyManager.getAPIKey())
   const cmdDeleteAPIKey = commands.registerCommand("diffCommit.deleteAPIKey", () => apiKeyManager.deleteAPIKey())
-  const cmdSelectOllamaModel = commands.registerCommand("diffCommit.selectOllamaModel", () =>
-    ollamaManager.changeOllamaModel(),
+  const cmdConfigureOllamaModel = commands.registerCommand("diffCommit.configureOllamaModel", () =>
+    ollamaManager.configureOllamaModel(),
   )
   const cmdChangeOllamaModel = commands.registerCommand("diffCommit.changeOllamaModel", () =>
     ollamaManager.changeOllamaModel(),
@@ -124,7 +124,7 @@ export function activate(context: ExtensionContext) {
     cmdUpdateAPIKey,
     cmdGetAPIKey,
     cmdDeleteAPIKey,
-    cmdSelectOllamaModel,
+    cmdConfigureOllamaModel,
     cmdChangeOllamaModel,
     onSave,
     onClose,
