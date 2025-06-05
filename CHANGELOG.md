@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.9](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.8...diff-commit-v0.3.9) (2025-06-04)
+
+
+### Documentation
+
+* **models:** update Claude model references to Claude 4 ([f74c4c6](https://github.com/tsdevau/diff-commit/commit/f74c4c6ff8109e0a477279b2209293e335b7b59a))
+
+
+### DX Maintenance & Configuration
+
+* **config:** update default model to claude-sonnet-4-0 ([f555e81](https://github.com/tsdevau/diff-commit/commit/f555e810c22b3651220475094f6d6236c8961bfe))
+* **models:** update Claude model references to Claude 4 Sonnet ([81315f8](https://github.com/tsdevau/diff-commit/commit/81315f8a6f9642bf93e4cb6dfcc7a177f372c0d8))
+
+
+### DX Testing
+
+* **anthropic:** update Claude model name to "claude-sonnet-4-0" ([887980c](https://github.com/tsdevau/diff-commit/commit/887980c308ebb617382b3223a3c2d2b7e2c66d1b))
+
 ## [0.3.8](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.7...diff-commit-v0.3.8) (2025-03-29)
 
 
