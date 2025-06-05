@@ -68,13 +68,19 @@ jest.mock("vscode", () => {
         get: jest.fn((key: string) => {
           switch (key) {
             case "model":
-              return "claude-3-5-sonnet-latest"
+              return "claude-sonnet-4-0"
             case "maxTokens":
               return 1024
             case "temperature":
-              return 0.4
+              return 0.2
             case "allowedTypes":
               return ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"]
+            case "provider":
+              return "anthropic"
+            case "ollamaHostname":
+              return "http://localhost:11434"
+            case "ollamaModel":
+              return ""
             default:
               return undefined
           }
@@ -272,7 +278,9 @@ describe("Anthropic API Response Handling", () => {
       const generateCommitMessage = getCommand("diffCommit.generateCommitMessage")
       await generateCommitMessage()
 
-      expect(consoleSpy).toHaveBeenCalledWith("[DiffCommit] Usage: ", { input_tokens: 100, output_tokens: 50 })
+      expect(consoleSpy).toHaveBeenCalledWith("[DiffCommit] Stop Reason: ", "end_turn")
+      expect(consoleSpy).toHaveBeenCalledWith("[DiffCommit] Input Tokens: ", 100)
+      expect(consoleSpy).toHaveBeenCalledWith("[DiffCommit] Output Tokens: ", 50)
     })
   })
 
