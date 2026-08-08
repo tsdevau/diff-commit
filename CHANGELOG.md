@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.4.0...diff-commit-v0.4.1) (2026-08-08)
+
+
+### DX Maintenance & Configuration
+
+* **.gitignore:** add coverage directory to ignore list ([0945f49](https://github.com/tsdevau/diff-commit/commit/0945f49395606bbd156ccc014b9c46313f516b0a))
+* **package:** update default model to claude-sonnet-5 and dependencies ([26cb824](https://github.com/tsdevau/diff-commit/commit/26cb824ccecf0e5006ad4b7d7cc50485d25cac0b))
+
 ## [0.4.0](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.3.9...diff-commit-v0.4.0) (2025-06-05)
 
 
