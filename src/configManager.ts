@@ -24,7 +24,7 @@ export class ConfigManager {
     "test",
   ]
   private static readonly defaultMaxTokens = 1024
-  private static readonly defaultModel = "claude-sonnet-4-0"
+  private static readonly defaultModel = "claude-sonnet-5"
   private static readonly defaultTemperature = 0.3
   private static readonly defaultProvider = "anthropic"
   private static readonly defaultOllamaHostname = "http://localhost:11434"
