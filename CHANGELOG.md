@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.2](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.4.1...diff-commit-v0.4.2) (2026-08-08)
+
+
+### Documentation
+
+* **readme:** update references to Claude Sonnet 5 in README and package.json ([7766cb4](https://github.com/tsdevau/diff-commit/commit/7766cb493a117760798cede9428ec5a7b5854bf9))
+
+
+### DX Testing
+
+* **tests:** update all test files to use "claude-sonnet-5" as the default model ([d4b7f86](https://github.com/tsdevau/diff-commit/commit/d4b7f8699be612de40db0e76d86c99c2d5291726))
+
 ## [0.4.1](https://github.com/tsdevau/diff-commit/compare/diff-commit-v0.4.0...diff-commit-v0.4.1) (2026-08-08)
 
 
