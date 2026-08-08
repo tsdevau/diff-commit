@@ -66,7 +66,7 @@ describe("Extension Core Functionality", () => {
     mockConfigManager = {
       getConfig: jest.fn().mockReturnValue({
         provider: "anthropic",
-        model: "claude-sonnet-4-0",
+        model: "claude-sonnet-5",
         maxTokens: 1024,
         temperature: 0.2,
         allowedTypes: ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"],
@@ -166,7 +166,7 @@ describe("Extension Core Functionality", () => {
         provider: "ollama",
         ollamaHostname: "http://localhost:11434",
         ollamaModel: "",
-        model: "claude-sonnet-4-0",
+        model: "claude-sonnet-5",
         maxTokens: 1024,
         temperature: 0.2,
         allowedTypes: ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"],
@@ -186,7 +186,7 @@ describe("Extension Core Functionality", () => {
         provider: "ollama",
         ollamaHostname: "http://localhost:11434",
         ollamaModel: "llama2",
-        model: "claude-sonnet-4-0",
+        model: "claude-sonnet-5",
         maxTokens: 1024,
         temperature: 0.2,
         allowedTypes: ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"],

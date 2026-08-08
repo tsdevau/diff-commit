@@ -124,7 +124,7 @@ describe("Configuration Handling", () => {
         provider: "ollama",
         ollamaHostname: "http://localhost:11434",
         ollamaModel: "llama2",
-        model: "claude-sonnet-4-0", // Not used for Ollama but still configured
+        model: "claude-sonnet-5", // Not used for Ollama but still configured
         maxTokens: 1000,
         temperature: 0.3,
       }

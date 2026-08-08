@@ -43,7 +43,7 @@ describe("Progress API Integration", () => {
 
     // Mock ConfigManager
     ;(ConfigManager.prototype.getConfig as jest.Mock).mockReturnValue({
-      model: "claude-sonnet-4-0",
+      model: "claude-sonnet-5",
       maxTokens: 1024,
       temperature: 0.2,
       provider: "anthropic",

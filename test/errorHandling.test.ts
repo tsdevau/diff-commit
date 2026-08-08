@@ -151,7 +151,7 @@ describe("Error Handling", () => {
     ;(vscode.workspace as any).getConfiguration = () => ({
       get: (key: string) => {
         const defaults: { [key: string]: any } = {
-          model: "claude-sonnet-4-0",
+          model: "claude-sonnet-5",
           maxTokens: 1024,
           temperature: 0.2,
           provider: "anthropic",
@@ -397,7 +397,7 @@ describe("Error Handling", () => {
             provider: "ollama",
             ollamaHostname: "http://localhost:11434",
             ollamaModel: "llama3.2",
-            model: "claude-sonnet-4-0",
+            model: "claude-sonnet-5",
             maxTokens: 1000,
             temperature: 0.3,
             allowedTypes: ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"],

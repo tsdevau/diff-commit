@@ -68,7 +68,7 @@ jest.mock("vscode", () => {
         get: jest.fn((key: string) => {
           switch (key) {
             case "model":
-              return "claude-sonnet-4-0"
+              return "claude-sonnet-5"
             case "maxTokens":
               return 1024
             case "temperature":

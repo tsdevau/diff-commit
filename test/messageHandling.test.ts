@@ -84,7 +84,7 @@ describe("Message Handling", () => {
     // Set up default configuration
     configGetMock.mockImplementation((key: string) => {
       const defaults: { [key: string]: any } = {
-        model: "claude-sonnet-4-0",
+        model: "claude-sonnet-5",
         maxTokens: 1024,
         temperature: 0.2,
         allowedTypes: ["feat", "fix", "refactor", "chore", "docs", "style", "test", "perf", "ci"],

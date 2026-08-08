@@ -48,7 +48,7 @@ jest.mock("vscode", () => {
         get: jest.fn((key: string) => {
           switch (key) {
             case "model":
-              return "claude-sonnet-4-0"
+              return "claude-sonnet-5"
             case "maxTokens":
               return 1024
             case "temperature":
@@ -215,7 +215,7 @@ describe("Git Integration", () => {
 
       expect(mockGitRepo.diff).toHaveBeenCalledWith(true)
       expect(mockAnthropicCreate).toHaveBeenCalledWith({
-        model: "claude-sonnet-4-0",
+        model: "claude-sonnet-5",
         max_tokens: 1024,
         temperature: 0.2,
         system: expect.any(String),
@@ -237,7 +237,7 @@ describe("Git Integration", () => {
 
       expect(mockGitRepo.diff).toHaveBeenCalledWith(true)
       expect(mockAnthropicCreate).toHaveBeenCalledWith({
-        model: "claude-sonnet-4-0",
+        model: "claude-sonnet-5",
         max_tokens: 1024,
         temperature: 0.2,
         system: expect.any(String),
