@@ -5,6 +5,9 @@ node_modules/
 build/
 out/
 
+# Test output
+coverage/
+
 # VSCode specific files
 .vscode-test/
 
