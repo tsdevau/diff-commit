@@ -1,6 +1,6 @@
 # Diff Commit
 
-Diff Commit is a VSCode extension that helps you generate commit messages following the conventional commits specification using AI models. Choose between Anthropic's cloud-based models like Claude 4 Sonnet or local Ollama models for offline usage. Commit messages are generated using the diff of staged changes and entered directly into the SCM message input or previewed in a new editor window.
+Diff Commit is a VSCode extension that helps you generate commit messages following the conventional commits specification using AI models. Choose between Anthropic's cloud-based models like Claude Sonnet 5 or local Ollama models for offline usage. Commit messages are generated using the diff of staged changes and entered directly into the SCM message input or previewed in a new editor window.
 
 The generated commit messages are compatible with [googleapis/release-please](https://github.com/googleapis/release-please) and other tools that use conventional commits.
 
@@ -40,7 +40,7 @@ The generated commit messages are compatible with [googleapis/release-please](ht
 
 - **Dual Provider Support**: Choose between Anthropic's cloud-based models or local Ollama models for offline usage
 - Generate commit messages based on the diff of staged changes using AI models
-- **Anthropic Integration**: Access to Claude 4 Sonnet and other powerful cloud models with an API key
+- **Anthropic Integration**: Access to Claude Sonnet 5 and other powerful cloud models with an API key
 - **Ollama Integration**: Use local models for complete offline functionality and privacy
 - Preview and edit generated commit messages before applying the commit
 - Uses markdown formatting for commit messages
@@ -195,14 +195,12 @@ Add additional custom instructions to the commit generation prompt. Useful for p
 
 The Anthropic AI model to use for generating commit messages. This setting is only used when the provider is set to "anthropic".
 
-| **Type** | **Options**                | **Default Value**   |
-| :------- | :------------------------- | :------------------ |
-| enum     | "claude-sonnet-4-0"        | "claude-sonnet-4-0" |
-|          | "claude-3-7-sonnet-latest" |                     |
-|          | "claude-3-5-sonnet-latest" |                     |
-|          | "claude-3-5-haiku-latest"  |                     |
-|          | "claude-opus-4-0"          |                     |
-|          | "claude-3-opus-latest"     |                     |
+| **Type** | **Options**        | **Default Value** |
+| :------- | :----------------- | :---------------- |
+| enum     | "claude-sonnet-5"  | "claude-sonnet-5" |
+|          | "claude-haiku-4-5" |                   |
+|          | "claude-opus-5"    |                   |
+|          | "claude-fable-5"   |                   |
 
 ### `diffCommit.ollamaHostname`
 
